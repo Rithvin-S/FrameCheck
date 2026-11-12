@@ -1,0 +1,122 @@
+.fc-review-workspace {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--fc-bg-app);
+  overflow: hidden;
+}
+
+.fc-workspace-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.fc-workspace-canvas-area {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-review-state-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px var(--fc-space-x);
+}
+
+.fc-review-state-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fc-review-state-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-review-state-text {
+  font-size: 14px;
+  color: var(--fc-text-secondary);
+}
+
+.fc-image-completion-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 8px;
+  margin-right: 2px;
+  border-right: 1px solid var(--fc-border);
+}
+
+.fc-image-completed-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background-color: var(--fc-success-soft);
+  border: 1px solid var(--fc-success-border);
+  color: var(--fc-success);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fc-image-inreview-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background-color: var(--fc-accent-soft);
+  border: 1px solid var(--fc-accent-border);
+  color: var(--fc-accent);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fc-btn-success-outline {
+  background-color: var(--fc-bg-surface);
+  border-color: var(--fc-success-border);
+  color: var(--fc-success);
+}
+
+.fc-btn-success-outline:hover:not(:disabled) {
+  background-color: var(--fc-success-soft);
+}
+
+.fc-realtime-banner {
+  padding: 6px 20px;
+  border-bottom: 1px solid var(--fc-warning-border);
+  background-color: var(--fc-warning-soft);
+  color: var(--fc-warning);
+  font-size: 12.5px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .fc-review-workspace {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .fc-workspace-body {
+    flex-direction: column;
+    overflow: visible;
+  }
+}
+

@@ -1,0 +1,39 @@
+.fc-status-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px var(--fc-space-x);
+}
+
+.fc-status-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--fc-shadow-sm);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fc-status-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-status-text {
+  font-size: 14px;
+  color: var(--fc-text-secondary);
+}
+
+.fc-status-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+

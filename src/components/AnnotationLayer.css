@@ -1,0 +1,51 @@
+.fc-annotation-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.fc-annotation-svg-draw {
+  cursor: crosshair;
+}
+
+.fc-annotation-svg-readonly {
+  pointer-events: none;
+  cursor: default;
+}
+
+.fc-annotation-svg-readonly .fc-ann-hit,
+.fc-annotation-svg-readonly .fc-ann-badge-group {
+  pointer-events: none;
+  cursor: default;
+}
+
+.fc-ann-hit {
+  cursor: move;
+}
+
+.fc-ann-hit-readonly {
+  cursor: pointer;
+}
+
+.fc-ann-badge-group {
+  cursor: move;
+  pointer-events: all;
+}
+
+.fc-ann-badge-readonly {
+  cursor: pointer;
+}
+
+.fc-ann-badge-text {
+  fill: #ffffff;
+  font-family: var(--fc-font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  pointer-events: none;
+}
+

@@ -1,0 +1,60 @@
+.fc-create-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--fc-shadow-sm);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fc-breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+  margin-bottom: 6px;
+}
+
+.fc-breadcrumb-link:hover {
+  color: var(--fc-accent);
+}
+
+.fc-batch-name-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 520px;
+}
+
+.fc-create-footer {
+  padding-top: 18px;
+  border-top: 1px solid var(--fc-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.fc-create-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fc-create-note {
+  font-size: 13px;
+  color: var(--fc-text-secondary);
+}
+
+@media (max-width: 640px) {
+  .fc-create-card {
+    padding: 20px;
+  }
+}
+

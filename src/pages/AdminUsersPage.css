@@ -1,0 +1,135 @@
+.fc-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fc-summary-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-md);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fc-summary-label {
+  font-size: 12.5px;
+  color: var(--fc-text-muted);
+  font-weight: 500;
+}
+
+.fc-summary-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-table-panel {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--fc-shadow-sm);
+  overflow: hidden;
+}
+
+.fc-table-scroll {
+  overflow-x: auto;
+}
+
+.fc-users-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.fc-users-table th {
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fc-text-muted);
+  background-color: var(--fc-bg-subtle);
+  border-bottom: 1px solid var(--fc-border);
+  white-space: nowrap;
+}
+
+.fc-users-table td {
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--fc-text-primary);
+  border-bottom: 1px solid var(--fc-border);
+  vertical-align: middle;
+}
+
+.fc-users-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.fc-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-you-tag {
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border-strong);
+  color: var(--fc-text-secondary);
+}
+
+.fc-email-cell {
+  color: var(--fc-text-secondary);
+}
+
+.fc-role-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fc-select {
+  padding: 6px 10px;
+  border-radius: var(--fc-radius-sm);
+  border: 1px solid var(--fc-border-strong);
+  background-color: var(--fc-bg-surface);
+  color: var(--fc-text-primary);
+  font-family: inherit;
+  font-size: 13.5px;
+}
+
+.fc-select:disabled {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-muted);
+  cursor: not-allowed;
+}
+
+.fc-protected-note {
+  font-size: 12.5px;
+  color: var(--fc-text-muted);
+}
+
+.fc-table-state {
+  padding: 32px 24px;
+  color: var(--fc-text-secondary);
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .fc-summary-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .fc-summary-bar {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -1,0 +1,7 @@
+.fc-app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--fc-bg-app);
+}
+

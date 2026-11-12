@@ -1,0 +1,216 @@
+.fc-page-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--fc-max-width);
+  margin: 0 auto;
+  padding: 36px var(--fc-space-x) 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fc-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.fc-page-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fc-page-title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fc-text-primary);
+}
+
+.fc-page-subtitle {
+  font-size: 14px;
+  color: var(--fc-text-secondary);
+}
+
+.fc-page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fc-dashboard-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fc-stat-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-md);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fc-stat-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fc-text-muted);
+}
+
+.fc-stat-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-batch-panel {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--fc-shadow-sm);
+  overflow: hidden;
+}
+
+.fc-batch-table-scroll {
+  overflow-x: auto;
+}
+
+.fc-batch-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.fc-batch-table th {
+  padding: 12px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fc-text-muted);
+  background-color: var(--fc-bg-subtle);
+  border-bottom: 1px solid var(--fc-border);
+  white-space: nowrap;
+}
+
+.fc-batch-table td {
+  padding: 15px 20px;
+  font-size: 14px;
+  color: var(--fc-text-primary);
+  border-bottom: 1px solid var(--fc-border);
+  vertical-align: middle;
+}
+
+.fc-batch-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.fc-batch-name-link {
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-batch-name-link:hover {
+  color: var(--fc-accent);
+}
+
+.fc-owner-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-owner-tag {
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border-strong);
+  color: var(--fc-text-secondary);
+}
+
+.fc-count-cell {
+  font-weight: 500;
+}
+
+.fc-review-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-secondary);
+}
+
+.fc-review-status-not_started {
+  background-color: var(--fc-bg-subtle);
+  border-color: var(--fc-border-strong);
+  color: var(--fc-text-secondary);
+}
+
+.fc-review-status-in_review {
+  background-color: var(--fc-accent-soft);
+  border-color: var(--fc-accent-border);
+  color: var(--fc-accent);
+}
+
+.fc-review-status-review_completed {
+  background-color: var(--fc-success-soft);
+  border-color: var(--fc-success-border);
+  color: var(--fc-success);
+}
+
+.fc-action-col {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fc-row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.fc-empty-state {
+  padding: 44px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.fc-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-empty-text {
+  font-size: 14px;
+  color: var(--fc-text-secondary);
+  max-width: 48ch;
+}
+
+@media (max-width: 820px) {
+  .fc-page-main {
+    padding: 24px var(--fc-space-x) 36px;
+  }
+
+  .fc-dashboard-summary {
+    grid-template-columns: 1fr;
+  }
+}

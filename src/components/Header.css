@@ -1,0 +1,145 @@
+.fc-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: var(--fc-header-height);
+  background-color: var(--fc-bg-surface);
+  border-bottom: 1px solid var(--fc-border);
+}
+
+.fc-header-inner {
+  min-height: var(--fc-header-height);
+  max-width: var(--fc-max-width);
+  margin: 0 auto;
+  padding: 8px var(--fc-space-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.fc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.fc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.fc-brand:hover {
+  text-decoration: none;
+}
+
+.fc-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--fc-radius-sm);
+  background-color: var(--fc-accent-soft);
+  border: 1px solid var(--fc-accent-border);
+  color: var(--fc-accent);
+  flex-shrink: 0;
+}
+
+.fc-brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fc-text-primary);
+}
+
+.fc-brand-divider {
+  width: 1px;
+  height: 16px;
+  background-color: var(--fc-border-strong);
+}
+
+.fc-brand-tagline {
+  font-size: 13px;
+  color: var(--fc-text-muted);
+  white-space: nowrap;
+}
+
+.fc-nav,
+.fc-auth-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-nav-link {
+  padding: 6px 10px;
+  border-radius: var(--fc-radius-sm);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.fc-nav-link:hover {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-primary);
+  text-decoration: none;
+}
+
+.fc-nav-link-active {
+  background-color: var(--fc-accent-soft);
+  color: var(--fc-accent);
+}
+
+.fc-header-meta {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fc-user-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fc-user-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-user-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .fc-brand-divider,
+  .fc-brand-tagline {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-header-inner {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .fc-user-name {
+    max-width: 120px;
+  }
+}

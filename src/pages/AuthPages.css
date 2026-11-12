@@ -1,0 +1,112 @@
+.fc-auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px var(--fc-space-x);
+}
+
+.fc-auth-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--fc-shadow-sm);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.fc-auth-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fc-auth-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fc-text-primary);
+}
+
+.fc-auth-subtitle {
+  font-size: 14px;
+  color: var(--fc-text-secondary);
+}
+
+.fc-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fc-label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+}
+
+.fc-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--fc-radius-sm);
+  border: 1px solid var(--fc-border-strong);
+  background-color: var(--fc-bg-surface);
+  color: var(--fc-text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.fc-input:focus {
+  outline: none;
+  border-color: var(--fc-accent);
+  box-shadow: 0 0 0 3px var(--fc-accent-soft);
+}
+
+.fc-input:disabled {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-muted);
+  cursor: not-allowed;
+}
+
+.fc-field-hint {
+  font-size: 12.5px;
+  color: var(--fc-text-muted);
+}
+
+.fc-submit-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 16px;
+}
+
+.fc-auth-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--fc-border);
+  font-size: 13.5px;
+  color: var(--fc-text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .fc-auth-main {
+    padding: 24px var(--fc-space-x);
+    align-items: flex-start;
+  }
+
+  .fc-auth-card {
+    padding: 24px;
+  }
+}
+

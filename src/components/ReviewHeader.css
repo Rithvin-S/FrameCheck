@@ -1,0 +1,106 @@
+.fc-review-header {
+  min-height: var(--fc-header-height);
+  background-color: var(--fc-bg-surface);
+  border-bottom: 1px solid var(--fc-border);
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.fc-review-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.fc-review-divider {
+  width: 1px;
+  height: 18px;
+  background-color: var(--fc-border-strong);
+  flex-shrink: 0;
+}
+
+.fc-review-batch-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.fc-review-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.fc-position-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background-color: var(--fc-accent-soft);
+  border: 1px solid var(--fc-accent-border);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--fc-accent);
+  white-space: nowrap;
+}
+
+.fc-review-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-secondary);
+}
+
+.fc-review-status-not_started {
+  background-color: var(--fc-bg-subtle);
+  border-color: var(--fc-border-strong);
+  color: var(--fc-text-secondary);
+}
+
+.fc-review-status-in_review {
+  background-color: var(--fc-accent-soft);
+  border-color: var(--fc-accent-border);
+  color: var(--fc-accent);
+}
+
+.fc-review-status-review_completed {
+  background-color: var(--fc-success-soft);
+  border-color: var(--fc-success-border);
+  color: var(--fc-success);
+}
+
+@media (max-width: 1024px) {
+  .fc-review-header {
+    flex-wrap: wrap;
+    padding: 10px 16px;
+  }
+
+  .fc-review-header-left {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-review-header-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+

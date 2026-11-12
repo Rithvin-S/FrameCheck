@@ -1,0 +1,62 @@
+.fc-batch-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: var(--fc-text-secondary);
+}
+
+.fc-batch-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fc-readonly-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+}
+
+.fc-add-images-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--fc-shadow-sm);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.fc-add-images-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fc-add-images-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-add-images-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--fc-border);
+  flex-wrap: wrap;
+}
+
