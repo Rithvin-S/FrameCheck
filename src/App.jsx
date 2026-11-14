@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute.jsx';
 import { PublicOnlyRoute } from './components/PublicOnlyRoute.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { AdminUsersPage } from './pages/AdminUsersPage.jsx';
+import { AnalyticsPage } from './pages/AnalyticsPage.jsx';
 import { BatchDetailPage } from './pages/BatchDetailPage.jsx';
 import { CreateBatchPage } from './pages/CreateBatchPage.jsx';
 import { DashboardPage } from './pages/DashboardPage.jsx';
@@ -42,6 +43,14 @@ function AppShell() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <AnalyticsPage />
             </ProtectedRoute>
           }
         />
