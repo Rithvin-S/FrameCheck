@@ -5,7 +5,7 @@ import { AnnotationToolbar } from '../components/AnnotationToolbar.jsx';
 import { ImagePreview } from '../components/ImagePreview.jsx';
 import { ReviewHeader } from '../components/ReviewHeader.jsx';
 import { ReviewSidebar } from '../components/ReviewSidebar.jsx';
-import { ThumbnailFilmstrip } from '../components/ThumbnailFilmstrip.jsx';
+import { ImageThumbnailsPanel } from '../components/ImageThumbnailsPanel.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
   createAnnotation,
@@ -84,6 +84,8 @@ export function ReviewWorkspacePage() {
   const [generatingImageReport, setGeneratingImageReport] = useState(false);
   const [realtimeNotice, setRealtimeNotice] = useState('');
   const [activeReviewers, setActiveReviewers] = useState([]);
+  const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(false);
+  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
 
   const loadSeqRef = useRef(0);
   const mutationQueueRef = useRef(Promise.resolve());
@@ -101,6 +103,13 @@ export function ReviewWorkspacePage() {
       setToolMode('select');
     }
   }, [isReadOnlyMode]);
+
+  // Automatically expand the comments panel when a draft annotation is initiated
+  useEffect(() => {
+    if (draftAnnotation && isRightPanelCollapsed) {
+      setIsRightPanelCollapsed(false);
+    }
+  }, [draftAnnotation, isRightPanelCollapsed]);
 
   const runQueuedSync = useCallback((task, annotationId = null) => {
     setPendingSyncCount((count) => count + 1);
@@ -1078,13 +1087,6 @@ export function ReviewWorkspacePage() {
         activeReviewers={activeReviewers}
       />
 
-      <ThumbnailFilmstrip
-        images={images}
-        selectedImageId={selectedImageId}
-        onSelectImage={handleSelectImage}
-        variant="workspace"
-      />
-
       {realtimeNotice ? (
         <div className="fc-realtime-banner" role="status" aria-live="polite">
           {realtimeNotice}
@@ -1092,6 +1094,14 @@ export function ReviewWorkspacePage() {
       ) : null}
 
       <div className="fc-workspace-body">
+        <ImageThumbnailsPanel
+          images={images}
+          selectedImageId={selectedImageId}
+          onSelectImage={handleSelectImage}
+          isCollapsed={isLeftPanelCollapsed}
+          onToggleCollapse={() => setIsLeftPanelCollapsed((prev) => !prev)}
+        />
+
         <main className="fc-workspace-canvas-area">
           <ImagePreview
             image={selectedImage}
@@ -1215,6 +1225,8 @@ export function ReviewWorkspacePage() {
           readOnly={isReadOnlyMode}
           actionError={actionError}
           onClearActionError={() => setActionError('')}
+          isCollapsed={isRightPanelCollapsed}
+          onToggleCollapse={() => setIsRightPanelCollapsed((prev) => !prev)}
         />
       </div>
     </div>

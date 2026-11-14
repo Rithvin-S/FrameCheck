@@ -1,0 +1,306 @@
+/* Left Vertical Image Panel */
+
+.fc-thumbnails-panel {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: var(--fc-bg-surface);
+  border-right: 1px solid var(--fc-border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  transition: width 200ms ease;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.fc-thumbnails-panel-collapsed {
+  width: 44px;
+  background-color: var(--fc-bg-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+/* Panel Header */
+.fc-thumbnails-panel-header {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--fc-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.fc-thumbnails-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-thumbnails-panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+  margin: 0;
+}
+
+.fc-panel-count {
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  color: var(--fc-text-secondary);
+}
+
+/* Toggle / Collapse & Expand Buttons */
+.fc-panel-toggle-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--fc-radius-sm);
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.fc-panel-toggle-btn:hover {
+  background-color: var(--fc-border);
+  color: var(--fc-text-primary);
+  border-color: var(--fc-border-strong);
+}
+
+.fc-panel-expand-btn {
+  width: 28px;
+  height: 28px;
+  margin-top: 10px;
+  border-radius: var(--fc-radius-sm);
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.fc-panel-expand-btn:hover {
+  background-color: var(--fc-border);
+  color: var(--fc-text-primary);
+  border-color: var(--fc-border-strong);
+}
+
+/* Collapsed Rail Body */
+.fc-collapsed-rail-body {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  cursor: pointer;
+}
+
+.fc-collapsed-rail-body:hover .fc-collapsed-vertical-text {
+  color: var(--fc-text-primary);
+}
+
+.fc-collapsed-icon {
+  color: var(--fc-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-collapsed-badge-neutral {
+  padding: 1px 5px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  color: var(--fc-text-secondary);
+}
+
+.fc-collapsed-badge {
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  background-color: #ea580c;
+  color: #ffffff;
+}
+
+.fc-collapsed-vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fc-text-muted);
+  transition: color 140ms ease;
+}
+
+/* Scrollable Thumbnails List */
+.fc-thumbnails-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Thumbnail Item */
+.fc-vthumb-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--fc-radius-md);
+  border: 1.5px solid transparent;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.fc-vthumb-item:hover {
+  background-color: var(--fc-bg-subtle);
+  border-color: var(--fc-border);
+}
+
+.fc-vthumb-item-selected {
+  border-color: var(--fc-accent) !important;
+  background-color: var(--fc-accent-soft) !important;
+}
+
+/* Thumbnail Image Frame */
+.fc-vthumb-frame {
+  width: 68px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: var(--fc-radius-sm);
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-subtle);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-vthumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.fc-vthumb-img-hidden {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fc-vthumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-vthumb-skeleton {
+  width: 50%;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--fc-border);
+}
+
+.fc-vthumb-error {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fc-danger);
+}
+
+.fc-vthumb-index {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  padding: 1px 4px;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.75);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.fc-vthumb-completed-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background-color: var(--fc-success);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px #ffffff;
+  line-height: 1;
+}
+
+/* Info Column */
+.fc-vthumb-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fc-vthumb-filename {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.fc-vthumb-meta {
+  font-size: 11px;
+  color: var(--fc-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fc-vthumb-status-done {
+  color: var(--fc-success);
+  font-weight: 600;
+}
+

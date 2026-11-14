@@ -426,6 +426,8 @@ export function ReviewSidebar({
   readOnly = false,
   actionError = '',
   onClearActionError,
+  isCollapsed = false,
+  onToggleCollapse,
 }) {
   const scrollContainerRef = useRef(null);
 
@@ -493,12 +495,105 @@ export function ReviewSidebar({
       ? imageMetaById.get(draftAnnotation.imageId)
       : null;
 
+  if (isCollapsed) {
+    return (
+      <aside
+        className="fc-review-sidebar fc-review-sidebar-collapsed"
+        aria-label="Image review comments (collapsed)"
+      >
+        <button
+          type="button"
+          className="fc-panel-expand-btn"
+          onClick={onToggleCollapse}
+          title="Expand comments panel"
+          aria-label="Expand comments panel"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div
+          className="fc-collapsed-rail-body"
+          onClick={onToggleCollapse}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onToggleCollapse?.();
+            }
+          }}
+          title="Click to expand comments panel"
+        >
+          <span className="fc-collapsed-icon" aria-hidden="true">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </span>
+          {counts.open > 0 ? (
+            <span
+              className="fc-collapsed-badge"
+              title={`${counts.open} open feedback items`}
+            >
+              {counts.open}
+            </span>
+          ) : (
+            <span className="fc-collapsed-badge-neutral">{counts.all}</span>
+          )}
+          <span className="fc-collapsed-vertical-text">Comments</span>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="fc-review-sidebar" aria-label="Image review comments">
       <div className="fc-sidebar-header">
         <div className="fc-sidebar-title-row">
-          <h2 className="fc-sidebar-title">Annotations &amp; Comments</h2>
-          <span className="fc-sidebar-count">{counts.all}</span>
+          <div className="fc-sidebar-title-group">
+            <h2 className="fc-sidebar-title">Annotations &amp; Comments</h2>
+            <span className="fc-sidebar-count">{counts.all}</span>
+          </div>
+
+          <button
+            type="button"
+            className="fc-panel-toggle-btn"
+            onClick={onToggleCollapse}
+            title="Collapse comments panel"
+            aria-label="Collapse comments panel"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         </div>
         {selectedImage ? (
           <p className="fc-sidebar-subtitle" title={selectedImage.original_filename}>

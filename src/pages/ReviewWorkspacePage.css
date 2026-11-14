@@ -10,7 +10,9 @@
   flex: 1;
   min-height: 0;
   display: flex;
+  flex-direction: row;
   overflow: hidden;
+  position: relative;
 }
 
 .fc-workspace-canvas-area {
@@ -19,6 +21,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .fc-review-state-main {
@@ -107,11 +110,12 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .fc-review-workspace {
     height: auto;
     min-height: 100vh;
-    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .fc-workspace-body {
