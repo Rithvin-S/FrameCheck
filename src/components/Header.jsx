@@ -74,6 +74,14 @@ export function Header() {
               >
                 Dashboard
               </NavLink>
+              <NavLink
+                to="/analytics"
+                className={({ isActive }) =>
+                  `fc-nav-link${isActive ? ' fc-nav-link-active' : ''}`
+                }
+              >
+                Analytics
+              </NavLink>
               {profile.role === ROLES.ADMIN ? (
                 <NavLink
                   to="/admin/users"

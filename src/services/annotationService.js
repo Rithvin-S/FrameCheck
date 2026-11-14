@@ -379,7 +379,7 @@ export async function fetchCreatorDisplayName(userId) {
 }
 
 /**
- * Subscribes to live annotation, soft-delete tombstone, and image completion events
+ * Subscribes to live annotation, soft-delete tombstone, image completion, and presence events
  * for a single batch on one Supabase Realtime channel.
  */
 export function subscribeToBatchReviewRealtime({
@@ -388,13 +388,88 @@ export function subscribeToBatchReviewRealtime({
   onAnnotationDelete,
   onBatchImageChange,
   onStatusChange,
+  presenceUser = null,
+  onPresenceSync = null,
 }) {
   if (!isSupabaseConfigured || !supabase || !batchId) {
     return () => {};
   }
 
-  const channel = supabase
-    .channel(`batch-review-${batchId}`)
+  const channelConfig =
+    presenceUser && presenceUser.user_id
+      ? {
+          config: {
+            presence: {
+              key: presenceUser.user_id,
+            },
+          },
+        }
+      : {};
+
+  const channel = supabase.channel(`batch-review-${batchId}`, channelConfig);
+
+  const canTrack = Boolean(
+    presenceUser &&
+      presenceUser.user_id &&
+      (presenceUser.role === 'reviewer' || presenceUser.role === 'admin')
+  );
+
+  const extractUniqueReviewers = (presenceState) => {
+    if (!presenceState || typeof presenceState !== 'object') {
+      return [];
+    }
+    const userMap = new Map();
+
+    Object.values(presenceState).forEach((presences) => {
+      if (!Array.isArray(presences)) return;
+      presences.forEach((p) => {
+        if (!p || !p.user_id) return;
+        // Only Reviewer and Admin roles appear in presence list
+        if (p.role === 'reviewer' || p.role === 'admin') {
+          if (!userMap.has(p.user_id)) {
+            userMap.set(p.user_id, {
+              userId: p.user_id,
+              displayName: p.display_name || 'Reviewer',
+              role: p.role,
+            });
+          }
+        }
+      });
+    });
+
+    return Array.from(userMap.values());
+  };
+
+  const notifyPresence = () => {
+    if (typeof onPresenceSync === 'function') {
+      const reviewers = extractUniqueReviewers(channel.presenceState());
+      onPresenceSync(reviewers);
+    }
+  };
+
+  const trackPresence = async () => {
+    if (!canTrack) return;
+    try {
+      await channel.track({
+        user_id: presenceUser.user_id,
+        display_name: presenceUser.display_name || 'Reviewer',
+        role: presenceUser.role,
+      });
+    } catch {
+      // Gracefully ignore presence tracking errors so core review continues
+    }
+  };
+
+  channel
+    .on('presence', { event: 'sync' }, () => {
+      notifyPresence();
+    })
+    .on('presence', { event: 'join' }, () => {
+      notifyPresence();
+    })
+    .on('presence', { event: 'leave' }, () => {
+      notifyPresence();
+    })
     .on(
       'postgres_changes',
       {
@@ -474,10 +549,14 @@ export function subscribeToBatchReviewRealtime({
       }
     )
     .subscribe((status, error) => {
+      if (status === 'SUBSCRIBED') {
+        trackPresence();
+      }
       onStatusChange?.(status, error);
     });
 
   return () => {
+    onPresenceSync?.([]);
     supabase.removeChannel(channel);
   };
 }

@@ -83,6 +83,7 @@ export function ReviewWorkspacePage() {
   const [updatingCompletionId, setUpdatingCompletionId] = useState(null);
   const [generatingImageReport, setGeneratingImageReport] = useState(false);
   const [realtimeNotice, setRealtimeNotice] = useState('');
+  const [activeReviewers, setActiveReviewers] = useState([]);
 
   const loadSeqRef = useRef(0);
   const mutationQueueRef = useRef(Promise.resolve());
@@ -384,11 +385,25 @@ export function ReviewWorkspacePage() {
       });
     };
 
+    const presenceUser = canReview
+      ? {
+          user_id: currentUserId,
+          display_name: creatorNameFallback,
+          role: profile?.role,
+        }
+      : null;
+
     const unsubscribe = subscribeToBatchReviewRealtime({
       batchId: batch.id,
       onAnnotationUpsert: handleRealtimeUpsert,
       onAnnotationDelete: handleRealtimeDelete,
       onBatchImageChange: handleRealtimeBatchImageChange,
+      presenceUser,
+      onPresenceSync: (reviewers) => {
+        if (!disposed) {
+          setActiveReviewers(reviewers);
+        }
+      },
       onStatusChange: (status) => {
         if (disposed) return;
         if (status === 'SUBSCRIBED') {
@@ -412,9 +427,10 @@ export function ReviewWorkspacePage() {
 
     return () => {
       disposed = true;
+      setActiveReviewers([]);
       unsubscribe();
     };
-  }, [batch?.id, currentUserId]);
+  }, [batch?.id, currentUserId, canReview, creatorNameFallback, profile?.role]);
 
   const handleSelectImage = useCallback(
     (nextImageId) => {
@@ -1032,6 +1048,7 @@ export function ReviewWorkspacePage() {
           batchName={batch.name}
           currentPosition={0}
           totalImages={0}
+          activeReviewers={activeReviewers}
         />
         <main className="fc-review-state-main">
           <div className="fc-review-state-card">
@@ -1058,6 +1075,7 @@ export function ReviewWorkspacePage() {
         batchReviewStatus={batchReviewStatus}
         currentPosition={currentPosition}
         totalImages={images.length}
+        activeReviewers={activeReviewers}
       />
 
       <ThumbnailFilmstrip

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { REVIEW_STATUS_LABELS } from '../services/batchService.js';
@@ -15,10 +15,27 @@ export function ReviewHeader({
   batchReviewStatus = null,
   currentPosition,
   totalImages,
+  activeReviewers = [],
 }) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
+
+  const reviewerNames = useMemo(() => {
+    if (!Array.isArray(activeReviewers) || activeReviewers.length === 0) {
+      return '';
+    }
+    const names = [];
+    const seen = new Set();
+    activeReviewers.forEach((r) => {
+      const name = (r?.displayName || 'Reviewer').trim();
+      if (name && !seen.has(name)) {
+        seen.add(name);
+        names.push(name);
+      }
+    });
+    return names.join(', ');
+  }, [activeReviewers]);
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -92,6 +109,18 @@ export function ReviewHeader({
       </div>
 
       <div className="fc-review-header-right">
+        {reviewerNames ? (
+          <div
+            className="fc-reviewer-presence-pill"
+            title={`Reviewing now: ${reviewerNames}`}
+            aria-label={`Reviewing now: ${reviewerNames}`}
+          >
+            <span className="fc-presence-dot" aria-hidden="true" />
+            <span className="fc-presence-label">Reviewing now:</span>
+            <span className="fc-presence-names">{reviewerNames}</span>
+          </div>
+        ) : null}
+
         {totalImages > 0 && currentPosition > 0 ? (
           <span className="fc-position-pill" aria-live="polite">
             Image {currentPosition} of {totalImages}
