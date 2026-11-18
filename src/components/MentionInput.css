@@ -1,0 +1,97 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Mention Input (Phase 2D Redesign)
+   Restrained @mention autocomplete dropdown and rendered mention pills.
+   ========================================================================== */
+
+.fc-mention-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.fc-mention-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-md, 8px);
+  box-shadow: var(--fc-shadow-lg);
+  z-index: 1060;
+  overflow: hidden;
+  max-height: 220px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.fc-mention-dropdown-header {
+  padding: 6px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--fc-text-muted);
+  background-color: var(--fc-bg-subtle);
+  border-bottom: 1px solid var(--fc-border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fc-mention-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background-color 100ms ease;
+  font-size: 12.5px;
+}
+
+.fc-mention-option:hover,
+.fc-mention-option.active {
+  background-color: var(--fc-accent-soft);
+}
+
+.fc-mention-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fc-mention-name {
+  font-weight: 600;
+  color: var(--fc-text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fc-mention-role {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--fc-text-muted);
+  text-transform: capitalize;
+  background-color: var(--fc-bg-subtle);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* Styled mention badges in rendered comment text */
+.fc-comment-mention {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background-color: var(--fc-accent-soft);
+  color: var(--fc-accent);
+  border: 1px solid var(--fc-accent-border);
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0 1px;
+}

@@ -79,6 +79,7 @@ export async function downloadImageReviewReport({
     startY: y,
     headerMeta,
     throwOnError: true,
+    annotations: imageAnnotations,
   });
   y = imageResult.nextY;
 

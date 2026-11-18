@@ -2,7 +2,10 @@
 -- Target: Supabase PostgreSQL (run after 001, 002, 003, 004, and 005 migrations)
 -- Preserves existing data, view access (can_view_batch_image), triggers, and Realtime functionality.
 
+BEGIN;
+
 -- 1. Dedicated helper for review actions (Reviewers and Admins only; Uploaders excluded)
+--    Reuses public.can_view_batch_image to verify batch-level authorization.
 CREATE OR REPLACE FUNCTION public.can_review_batch_image(target_image_id uuid)
 RETURNS boolean
 LANGUAGE sql
@@ -12,14 +15,11 @@ SET search_path = public, pg_temp
 AS $$
   SELECT auth.uid() IS NOT NULL
     AND public.is_reviewer_or_admin()
-    AND EXISTS (
-      SELECT 1
-      FROM public.batch_images AS bi
-      WHERE bi.id = target_image_id
-    );
+    AND public.can_view_batch_image(target_image_id);
 $$;
 
 REVOKE ALL ON FUNCTION public.can_review_batch_image(uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.can_review_batch_image(uuid) FROM anon;
 GRANT EXECUTE ON FUNCTION public.can_review_batch_image(uuid) TO authenticated;
 
 -- 2. Restrict annotation INSERT and UPDATE RLS policies to Reviewers and Admins
@@ -41,18 +41,18 @@ CREATE POLICY annotations_update_creator
   FOR UPDATE
   TO authenticated
   USING (
-    created_by = auth.uid()
+    (created_by = auth.uid() OR public.is_admin())
     AND deleted_at IS NULL
     AND public.can_review_batch_image(image_id)
   )
   WITH CHECK (
-    created_by = auth.uid()
+    (created_by = auth.uid() OR public.is_admin())
     AND deleted_at IS NULL
     AND public.can_review_batch_image(image_id)
   );
 
 -- 3. Enforce reviewer/admin role check inside SECURITY DEFINER soft-delete & restore RPCs
---    while preserving creator-only ownership restrictions.
+--    while enforcing creator ownership with Admin exception and batch review access.
 CREATE OR REPLACE FUNCTION public.soft_delete_annotation(target_annotation_id uuid)
 RETURNS public.annotations
 LANGUAGE plpgsql
@@ -81,7 +81,7 @@ BEGIN
     RAISE EXCEPTION 'Annotation not found.' USING ERRCODE = 'P0002';
   END IF;
 
-  IF v_row.created_by <> auth.uid()
+  IF (v_row.created_by <> auth.uid() AND NOT public.is_admin())
      OR NOT public.can_review_batch_image(v_row.image_id) THEN
     RAISE EXCEPTION 'You can only delete your own annotations.'
       USING ERRCODE = '42501';
@@ -94,7 +94,7 @@ BEGIN
   PERFORM set_config('framecheck.allow_deleted_at_mutation', 'on', true);
 
   UPDATE public.annotations
-  SET deleted_at = timezone('utc', now())
+  SET deleted_at = now()
   WHERE id = target_annotation_id
   RETURNING * INTO v_row;
 
@@ -103,6 +103,7 @@ END;
 $$;
 
 REVOKE ALL ON FUNCTION public.soft_delete_annotation(uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.soft_delete_annotation(uuid) FROM anon;
 GRANT EXECUTE ON FUNCTION public.soft_delete_annotation(uuid) TO authenticated;
 
 CREATE OR REPLACE FUNCTION public.restore_annotation(target_annotation_id uuid)
@@ -133,7 +134,7 @@ BEGIN
     RAISE EXCEPTION 'Annotation not found.' USING ERRCODE = 'P0002';
   END IF;
 
-  IF v_row.created_by <> auth.uid()
+  IF (v_row.created_by <> auth.uid() AND NOT public.is_admin())
      OR NOT public.can_review_batch_image(v_row.image_id) THEN
     RAISE EXCEPTION 'You can only restore your own annotations.'
       USING ERRCODE = '42501';
@@ -155,9 +156,11 @@ END;
 $$;
 
 REVOKE ALL ON FUNCTION public.restore_annotation(uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.restore_annotation(uuid) FROM anon;
 GRANT EXECUTE ON FUNCTION public.restore_annotation(uuid) TO authenticated;
 
 -- 4. Restrict batch_images completion updates to Reviewers and Admins only
+--    Reuses public.can_view_batch to verify batch-level authorization.
 DROP POLICY IF EXISTS batch_images_update_completion_authorized ON public.batch_images;
 CREATE POLICY batch_images_update_completion_authorized
   ON public.batch_images
@@ -165,18 +168,11 @@ CREATE POLICY batch_images_update_completion_authorized
   TO authenticated
   USING (
     public.is_reviewer_or_admin()
-    AND EXISTS (
-      SELECT 1
-      FROM public.batches AS b
-      WHERE b.id = batch_id
-    )
+    AND public.can_view_batch(batch_id)
   )
   WITH CHECK (
     public.is_reviewer_or_admin()
-    AND EXISTS (
-      SELECT 1
-      FROM public.batches AS b
-      WHERE b.id = batch_id
-    )
+    AND public.can_view_batch(batch_id)
   );
 
+COMMIT;

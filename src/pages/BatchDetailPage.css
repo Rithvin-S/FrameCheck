@@ -1,39 +1,194 @@
-.fc-batch-meta-row {
+/* ==========================================================================
+   FrameCheck 2.0 — Batch Details / Overview Page Styles
+   Figma-style creative workspace combined with Linear-style clean SaaS dashboard.
+   ========================================================================== */
+
+.fc-batch-overview-page {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-size: 13.5px;
-  color: var(--fc-text-secondary);
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  box-sizing: border-box;
 }
 
-.fc-batch-meta-item {
+/* --------------------------------------------------------------------------
+   1. Redesigned Batch Header Card
+   -------------------------------------------------------------------------- */
+
+.fc-batch-header-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg, 12px);
+  box-shadow: var(--fc-shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.05));
+  padding: 20px 24px;
+}
+
+.fc-batch-header-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.fc-batch-header-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 450px;
+}
+
+.fc-batch-back-breadcrumb {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+  text-decoration: none;
+  transition: color 140ms ease;
+  width: fit-content;
+}
+
+.fc-batch-back-breadcrumb:hover {
+  color: var(--fc-accent);
+  text-decoration: none;
+}
+
+.fc-batch-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fc-batch-heading {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fc-text-primary);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.fc-batch-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-secondary);
+  flex-shrink: 0;
+}
+
+.fc-batch-status-not_started {
+  background-color: var(--fc-bg-subtle);
+  border-color: var(--fc-border-strong);
+  color: var(--fc-text-secondary);
+}
+
+.fc-batch-status-in_review {
+  background-color: var(--fc-accent-soft);
+  border-color: var(--fc-accent-border);
+  color: var(--fc-accent);
+}
+
+.fc-batch-status-review_completed {
+  background-color: var(--fc-success-soft, #ecfdf5);
+  border-color: var(--fc-success-border, #a7f3d0);
+  color: var(--fc-success, #059669);
+}
+
+.fc-batch-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--fc-text-secondary);
+  margin-top: 2px;
+}
+
+.fc-batch-meta-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.fc-batch-meta-cell svg {
+  color: var(--fc-text-muted);
+}
+
+.fc-batch-meta-sep {
+  color: var(--fc-border-strong);
+  user-select: none;
+}
+
+.fc-batch-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.fc-btn-action-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.16);
+}
+
+.fc-btn-action-primary:hover {
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.28);
 }
 
 .fc-readonly-pill {
   display: inline-flex;
   align-items: center;
-  padding: 5px 12px;
+  padding: 6px 12px;
   border-radius: 999px;
   background-color: var(--fc-bg-subtle);
   border: 1px solid var(--fc-border);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--fc-text-secondary);
 }
 
+/* --------------------------------------------------------------------------
+   Add Images Collapsible Card
+   -------------------------------------------------------------------------- */
+
 .fc-add-images-card {
   background-color: var(--fc-bg-surface);
   border: 1px solid var(--fc-border);
-  border-radius: var(--fc-radius-lg);
-  box-shadow: var(--fc-shadow-sm);
+  border-radius: var(--fc-radius-lg, 12px);
+  box-shadow: var(--fc-shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.05));
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  animation: fc-expand-down 180ms ease-out;
+}
+
+@keyframes fc-expand-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fc-add-images-header {
@@ -44,10 +199,23 @@
   flex-wrap: wrap;
 }
 
+.fc-add-images-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .fc-add-images-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--fc-text-primary);
+  margin: 0;
+}
+
+.fc-add-images-subtitle {
+  font-size: 13px;
+  color: var(--fc-text-muted);
+  margin: 0;
 }
 
 .fc-add-images-footer {
@@ -55,8 +223,777 @@
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  padding-top: 12px;
+  padding-top: 14px;
   border-top: 1px solid var(--fc-border);
   flex-wrap: wrap;
 }
 
+/* --------------------------------------------------------------------------
+   2. Filmstrip Section
+   -------------------------------------------------------------------------- */
+
+.fc-overview-filmstrip-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fc-section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fc-section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fc-text-primary);
+  margin: 0;
+}
+
+.fc-badge-neutral {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  color: var(--fc-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   3. Batch Overview & Analytics Dashboard
+   -------------------------------------------------------------------------- */
+
+.fc-overview-dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* KPI Statistics Grid */
+.fc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .fc-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .fc-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fc-stat-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg, 12px);
+  padding: 18px 20px;
+  box-shadow: var(--fc-shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.05));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.fc-stat-card:hover {
+  transform: translateY(-1.5px);
+  border-color: var(--fc-border-strong);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.fc-stat-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fc-stat-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+}
+
+.fc-stat-icon-bubble {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--fc-radius-md, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fc-bubble-indigo {
+  background-color: var(--fc-accent-soft);
+  color: var(--fc-accent);
+}
+
+.fc-bubble-purple {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+
+.fc-bubble-green {
+  background-color: var(--fc-success-soft, #ecfdf5);
+  color: var(--fc-success, #059669);
+}
+
+.fc-bubble-amber {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.fc-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fc-text-primary);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+}
+
+.fc-stat-subtext {
+  font-size: 11.5px;
+  color: var(--fc-text-muted);
+}
+
+/* Middle Split Row: Progress + Info */
+.fc-overview-split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 960px) {
+  .fc-overview-split-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fc-overview-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg, 12px);
+  box-shadow: var(--fc-shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.05));
+  overflow: hidden;
+}
+
+.fc-card-header-clean {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--fc-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fc-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fc-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fc-text-primary);
+  margin: 0;
+}
+
+.fc-card-subtitle {
+  font-size: 12px;
+  color: var(--fc-text-muted);
+}
+
+.fc-card-info-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fc-accent);
+  background-color: var(--fc-accent-soft);
+  padding: 3px 8px;
+  border-radius: 999px;
+  user-select: none;
+}
+
+/* Circular Review Progress Card Body */
+.fc-progress-card {
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.fc-progress-card:hover {
+  transform: translateY(-1.5px);
+  border-color: var(--fc-border-strong);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.fc-progress-card-body {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.fc-progress-svg-wrap {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+}
+
+.fc-progress-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.fc-progress-circle-track {
+  fill: none;
+  stroke: var(--fc-bg-subtle, #f1f5f9);
+}
+
+.fc-progress-circle-fill {
+  fill: none;
+  stroke: var(--fc-accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fc-progress-circle-fill.fc-progress-complete {
+  stroke: var(--fc-success, #10b981);
+}
+
+.fc-progress-svg-center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.fc-progress-percentage {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fc-text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-progress-center-sub {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--fc-text-muted);
+  margin-top: 3px;
+}
+
+.fc-progress-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.fc-progress-metric-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.fc-progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fc-dot-completed {
+  background-color: var(--fc-success, #10b981);
+}
+
+.fc-dot-in-review {
+  background-color: #f59e0b;
+}
+
+.fc-dot-not-started {
+  background-color: var(--fc-text-muted, #94a3b8);
+}
+
+.fc-progress-metric-name {
+  color: var(--fc-text-secondary);
+  font-weight: 500;
+  flex: 1;
+}
+
+.fc-progress-metric-val {
+  font-weight: 600;
+  color: var(--fc-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Batch Metadata Card Body */
+.fc-batch-info-grid {
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fc-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fc-info-item-wide {
+  grid-column: 1 / -1;
+  margin-top: 2px;
+}
+
+.fc-info-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--fc-text-muted);
+}
+
+.fc-info-val {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fc-badge-you {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background-color: var(--fc-accent-soft);
+  color: var(--fc-accent);
+}
+
+.fc-batch-id-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.fc-batch-id-code {
+  font-family: var(--fc-font-mono, monospace);
+  font-size: 12px;
+  color: var(--fc-text-secondary);
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  padding: 3px 8px;
+  border-radius: var(--fc-radius-sm, 6px);
+  user-select: all;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fc-copy-btn {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--fc-radius-sm, 6px);
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-surface);
+  color: var(--fc-text-secondary);
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.fc-copy-btn:hover {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-primary);
+  border-color: var(--fc-border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Reviewer Activity & Participation
+   -------------------------------------------------------------------------- */
+
+.fc-activity-split-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .fc-activity-split-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.fc-activity-reviewers-pane,
+.fc-activity-feed-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.fc-pane-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fc-text-secondary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-pane-empty {
+  padding: 24px 16px;
+  background-color: var(--fc-bg-subtle);
+  border-radius: var(--fc-radius-md, 8px);
+  border: 1px dashed var(--fc-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--fc-text-muted);
+  font-size: 13px;
+  gap: 4px;
+}
+
+.fc-pane-empty p {
+  margin: 0;
+  font-size: 11.5px;
+}
+
+.fc-reviewers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fc-reviewer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--fc-radius-md, 8px);
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  transition: background-color 140ms ease;
+}
+
+.fc-reviewer-item:hover {
+  background-color: var(--fc-bg-surface);
+}
+
+.fc-reviewer-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fc-reviewer-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.fc-reviewer-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-reviewer-meta {
+  font-size: 11.5px;
+  color: var(--fc-text-muted);
+}
+
+.fc-reviewer-time {
+  font-size: 11px;
+  color: var(--fc-text-muted);
+  flex-shrink: 0;
+}
+
+/* Activity Feed Timeline */
+.fc-activity-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fc-timeline-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--fc-radius-md, 8px);
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  font-size: 12.5px;
+}
+
+.fc-timeline-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+  background-color: var(--fc-accent);
+}
+
+.fc-timeline-cat-completions {
+  background-color: var(--fc-success, #10b981);
+}
+
+.fc-timeline-cat-status {
+  background-color: #3b82f6;
+}
+
+.fc-timeline-cat-comments {
+  background-color: #8b5cf6;
+}
+
+.fc-timeline-cat-annotations {
+  background-color: #f59e0b;
+}
+
+.fc-timeline-text-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  gap: 2px;
+}
+
+.fc-timeline-actor {
+  color: var(--fc-text-primary);
+  line-height: 1.35;
+}
+
+.fc-timeline-actor strong {
+  font-weight: 600;
+}
+
+.fc-timeline-target {
+  font-size: 11px;
+  color: var(--fc-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-timeline-time {
+  font-size: 11px;
+  color: var(--fc-text-muted);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Floating Progress Breakdown Popover
+   -------------------------------------------------------------------------- */
+
+.fc-progress-popover {
+  position: fixed;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg, 12px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.08);
+  z-index: 9998;
+  overflow: hidden;
+  animation: fc-popover-in 140ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fc-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fc-popover-header {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--fc-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fc-popover-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fc-text-primary);
+  margin: 0;
+}
+
+.fc-popover-subtitle {
+  font-size: 11.5px;
+  color: var(--fc-text-muted);
+}
+
+.fc-popover-close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--fc-text-muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.fc-popover-close-btn:hover {
+  color: var(--fc-text-primary);
+  background-color: var(--fc-bg-subtle);
+}
+
+.fc-popover-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fc-segmented-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+}
+
+.fc-segment {
+  height: 100%;
+  transition: width 400ms ease;
+}
+
+.fc-seg-completed {
+  background-color: var(--fc-success, #10b981);
+}
+
+.fc-seg-in-review {
+  background-color: #f59e0b;
+}
+
+.fc-seg-not-started {
+  background-color: var(--fc-border-strong);
+}
+
+.fc-popover-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fc-popover-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+}
+
+.fc-popover-row-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.fc-popover-row-name {
+  font-weight: 600;
+  color: var(--fc-text-primary);
+}
+
+.fc-popover-row-desc {
+  font-size: 11px;
+  color: var(--fc-text-muted);
+}
+
+.fc-popover-row-count {
+  font-weight: 700;
+  color: var(--fc-text-primary);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+
+.fc-popover-footnote {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--fc-text-muted);
+  padding-top: 10px;
+  border-top: 1px solid var(--fc-border);
+}
+
+.fc-popover-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  border-radius: var(--fc-radius-md, 8px);
+  background-color: var(--fc-accent);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 140ms ease;
+}
+
+.fc-popover-action-btn:hover {
+  background-color: var(--fc-accent-hover, #4f46e5);
+  text-decoration: none;
+}

@@ -18,6 +18,19 @@ export function formatRoleLabel(role) {
   return ROLE_LABELS[role] ?? 'Unknown';
 }
 
+/**
+ * Determines whether a user profile is authorized to access the review workspace.
+ * Only Reviewers and Admins are permitted; Uploaders and unauthenticated or
+ * loading profiles evaluate safely to false.
+ * @param {{ role?: string } | null | undefined} profile
+ * @returns {boolean}
+ */
+export function canUserReview(profile) {
+  return Boolean(
+    profile?.role && (profile.role === ROLES.REVIEWER || profile.role === ROLES.ADMIN)
+  );
+}
+
 function getClientOrThrow() {
   if (!supabase) {
     throw new Error(

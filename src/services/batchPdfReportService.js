@@ -265,6 +265,7 @@ export async function downloadBatchReviewReport({
       startY: sectionY,
       headerMeta,
       throwOnError: false,
+      annotations: imageAnnotations,
     });
     if (imageResult.warning) {
       warnings.push(imageResult.warning);

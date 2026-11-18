@@ -1,36 +1,45 @@
+/* ==========================================================================
+   FrameCheck Redesign — Phase 1: Application Navigation Header
+   Linear-inspired, clean, spacious SaaS navigation surface.
+   ========================================================================== */
+
 .fc-header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  min-height: var(--fc-header-height);
+  z-index: 100;
+  height: var(--fc-header-height, 56px);
+  min-height: var(--fc-header-height, 56px);
   background-color: var(--fc-bg-surface);
   border-bottom: 1px solid var(--fc-border);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
 .fc-header-inner {
-  min-height: var(--fc-header-height);
-  max-width: var(--fc-max-width);
+  height: 100%;
+  max-width: var(--fc-max-width, 1440px);
   margin: 0 auto;
-  padding: 8px var(--fc-space-x);
+  padding: 0 var(--fc-space-x, 24px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 24px;
 }
 
+/* --- Brand Identity Group --- */
 .fc-header-left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   min-width: 0;
 }
 
 .fc-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-width: 0;
+  min-width: max-content;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .fc-brand:hover {
@@ -43,42 +52,41 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--fc-radius-sm);
+  border-radius: var(--fc-radius-sm, 6px);
   background-color: var(--fc-accent-soft);
   border: 1px solid var(--fc-accent-border);
   color: var(--fc-accent);
   flex-shrink: 0;
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.fc-brand:hover .fc-brand-mark {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 2px var(--fc-accent-soft);
 }
 
 .fc-brand-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   color: var(--fc-text-primary);
-}
-
-.fc-brand-divider {
-  width: 1px;
-  height: 16px;
-  background-color: var(--fc-border-strong);
-}
-
-.fc-brand-tagline {
-  font-size: 13px;
-  color: var(--fc-text-muted);
   white-space: nowrap;
 }
 
+/* --- Navigation Links (Linear-inspired) --- */
 .fc-nav,
 .fc-auth-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .fc-nav-link {
-  padding: 6px 10px;
-  border-radius: var(--fc-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--fc-radius-sm, 6px);
   font-size: 13.5px;
   font-weight: 500;
   color: var(--fc-text-secondary);
@@ -96,50 +104,145 @@
 .fc-nav-link-active {
   background-color: var(--fc-accent-soft);
   color: var(--fc-accent);
+  font-weight: 600;
 }
 
+.fc-nav-link-active:hover {
+  background-color: var(--fc-accent-soft);
+  color: var(--fc-accent);
+}
+
+.fc-nav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--fc-radius-sm, 6px);
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.fc-nav-back-btn:hover {
+  background-color: var(--fc-bg-subtle);
+  border-color: var(--fc-border-hover, #cbd5e1);
+  color: var(--fc-text-primary);
+  text-decoration: none;
+}
+
+.fc-nav-back-btn:active {
+  background-color: var(--fc-bg-active, #f1f5f9);
+}
+
+.fc-nav-back-btn svg {
+  flex-shrink: 0;
+  color: currentColor;
+  transition: transform 140ms ease;
+}
+
+.fc-nav-back-btn:hover svg {
+  transform: translateX(-1.5px);
+}
+
+/* --- Right Side: Meta / Utilities & User Identity --- */
 .fc-header-meta {
   display: flex;
   align-items: center;
+  gap: 12px;
   flex-shrink: 0;
+}
+
+.fc-theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--fc-radius-sm, 6px);
+  border: 1px solid var(--fc-border);
+  background-color: var(--fc-bg-surface);
+  color: var(--fc-text-secondary);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+  flex-shrink: 0;
+}
+
+.fc-theme-toggle-btn:hover {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-primary);
+  border-color: var(--fc-border-strong);
 }
 
 .fc-user-controls {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .fc-user-identity {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 2px 8px 2px 3px;
+  border-radius: 999px;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+}
+
+.fc-user-avatar-initial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--fc-accent);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .fc-user-name {
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--fc-text-primary);
-  max-width: 200px;
+  max-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-@media (max-width: 900px) {
-  .fc-brand-divider,
-  .fc-brand-tagline {
-    display: none;
-  }
+.fc-user-controls .fc-btn {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 12.5px;
+  border-radius: var(--fc-radius-sm, 6px);
 }
 
-@media (max-width: 640px) {
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .fc-header-inner {
-    flex-wrap: wrap;
-    gap: 10px;
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .fc-header-left {
+    gap: 12px;
   }
 
   .fc-user-name {
-    max-width: 120px;
+    max-width: 90px;
+  }
+
+  .fc-role-badge {
+    display: none;
   }
 }

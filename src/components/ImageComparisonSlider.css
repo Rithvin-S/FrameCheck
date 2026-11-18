@@ -1,0 +1,283 @@
+/* ImageComparisonSlider.css - FrameCheck Phase 22B */
+
+.fc-cmp-slider-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #0b0f19;
+}
+
+/* Central Stage */
+.fc-cmp-slider-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  outline: none;
+}
+
+.fc-cmp-slider-stage:active {
+  cursor: grabbing;
+}
+
+.fc-cmp-slider-loading,
+.fc-cmp-slider-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.fc-cmp-slider-viewport {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Unified Pan/Zoom Coordinate Frame */
+.fc-cmp-slider-frame {
+  position: relative;
+  will-change: transform;
+  transform-origin: center center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  background-color: #030712;
+  border-radius: 2px;
+}
+
+/* Layers */
+.fc-cmp-slider-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: clip-path;
+  border-radius: 2px;
+}
+
+.fc-cmp-layer-before {
+  z-index: 1;
+}
+
+.fc-cmp-layer-after {
+  z-index: 2;
+}
+
+.fc-cmp-layer-inner {
+  position: absolute;
+  overflow: hidden;
+}
+
+.fc-cmp-layer-img {
+  display: block;
+  max-width: none;
+  max-height: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Draggable Divider Line */
+.fc-cmp-slider-divider {
+  position: absolute;
+  z-index: 10;
+  pointer-events: auto;
+  touch-action: none;
+  outline: none;
+  background-color: #ffffff;
+}
+
+.fc-divider-vertical {
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  cursor: ew-resize;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7), 0 0 14px rgba(56, 189, 248, 0.6);
+}
+
+.fc-divider-horizontal {
+  left: 0;
+  right: 0;
+  height: 2px;
+  margin-top: -1px;
+  cursor: ns-resize;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7), 0 0 14px rgba(56, 189, 248, 0.6);
+}
+
+/* Central Circular Grab Handle Knob */
+.fc-cmp-divider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0f172a;
+  border: 2px solid #38bdf8;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+  cursor: inherit;
+}
+
+.fc-cmp-slider-divider:hover .fc-cmp-divider-handle,
+.fc-cmp-slider-divider:focus .fc-cmp-divider-handle {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 0 16px rgba(56, 189, 248, 0.7);
+  border-color: #0284c7;
+}
+
+.fc-cmp-slider-divider:active .fc-cmp-divider-handle {
+  transform: translate(-50%, -50%) scale(0.95);
+  cursor: grabbing;
+}
+
+.fc-cmp-handle-badge {
+  font-size: 8px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: #0284c7;
+  margin-top: 1px;
+  letter-spacing: -0.02em;
+}
+
+/* Floating Identity Badges (pinned to edges of viewport) */
+.fc-cmp-floating-label {
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  color: #f8fafc;
+  pointer-events: none;
+  user-select: none;
+  font-size: 12px;
+}
+
+.fc-label-left {
+  top: 14px;
+  left: 16px;
+}
+
+.fc-label-right {
+  top: 14px;
+  right: 16px;
+}
+
+.fc-label-top {
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fc-label-bottom {
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fc-cmp-label-name {
+  font-weight: 500;
+  color: #e2e8f0;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-cmp-label-dims {
+  font-size: 11px;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bottom Controls Bar */
+.fc-cmp-slider-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+  user-select: none;
+}
+
+.fc-cmp-slider-presets {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 12px;
+  padding: 2px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fc-cmp-preset-btn {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-cmp-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.fc-cmp-preset-btn.active {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+.fc-cmp-controls-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.15);
+}
+

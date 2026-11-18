@@ -1,0 +1,415 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Version History Modal
+   ========================================================================== */
+
+.fc-vhm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10050;
+  animation: fc-vhm-fade-in 140ms ease-out;
+}
+
+@keyframes fc-vhm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fc-vhm-card {
+  background-color: var(--fc-bg-surface, #ffffff);
+  border: 1px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-xl, 14px);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.2), 0 4px 10px rgba(15, 23, 42, 0.08);
+  width: 100%;
+  max-width: 900px;
+  height: 85vh;
+  max-height: 720px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fc-vhm-scale-up 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fc-vhm-scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fc-vhm-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--fc-border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.fc-vhm-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fc-vhm-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-vhm-subtitle {
+  font-size: 12.5px;
+  color: var(--fc-text-secondary, #475569);
+  font-family: inherit;
+}
+
+.fc-vhm-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--fc-text-muted, #94a3b8);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 120ms ease;
+}
+
+.fc-vhm-close-btn:hover {
+  color: var(--fc-text-primary, #0f172a);
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+}
+
+.fc-vhm-body {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Left list pane */
+.fc-vhm-list-pane {
+  border-right: 1px solid var(--fc-border, #e2e8f0);
+  background-color: var(--fc-bg-subtle, #f8fafc);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.fc-vhm-list-header {
+  padding: 10px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--fc-text-secondary, #475569);
+  border-bottom: 1px solid var(--fc-border, #e2e8f0);
+  background-color: var(--fc-bg-surface, #ffffff);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fc-vhm-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fc-vhm-item {
+  background-color: var(--fc-bg-surface, #ffffff);
+  border: 1.5px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-md, 8px);
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 140ms ease;
+  user-select: none;
+}
+
+.fc-vhm-item:hover {
+  border-color: var(--fc-border-strong, #cbd5e1);
+  background-color: #f8fafc;
+}
+
+.fc-vhm-item-selected {
+  border-color: var(--fc-accent, #6366f1) !important;
+  background-color: var(--fc-accent-soft, #eef2ff) !important;
+  box-shadow: 0 0 0 2px var(--fc-accent-soft, #eef2ff);
+}
+
+.fc-vhm-item-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 6px;
+  background-color: #0b1120;
+  border: 1px solid var(--fc-border, #e2e8f0);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-vhm-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fc-vhm-thumb-placeholder {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.fc-vhm-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fc-vhm-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.fc-vhm-item-version {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-vhm-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1.5px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.fc-vhm-badge-active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.fc-vhm-badge-approved {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.fc-vhm-badge-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.fc-vhm-badge-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.fc-vhm-badge-archived {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.fc-vhm-item-meta-row {
+  font-size: 11px;
+  color: var(--fc-text-secondary, #475569);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.fc-vhm-dot {
+  color: var(--fc-text-muted, #94a3b8);
+}
+
+.fc-vhm-item-correction {
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--fc-text-secondary, #334155);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-left: 2px solid #818cf8;
+  padding: 3px 6px;
+  border-radius: 2px;
+}
+
+.fc-vhm-correction-label {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.fc-vhm-correction-text {
+  margin: 0;
+  display: inline;
+  font-style: italic;
+}
+
+.fc-vhm-item-rejection {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #991b1b;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 4px 6px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fc-vhm-rejection-label {
+  font-weight: 700;
+}
+
+.fc-vhm-rejection-text {
+  margin: 0;
+}
+
+.fc-vhm-rejection-by {
+  font-size: 10px;
+  color: #b91c1c;
+  margin-top: 2px;
+}
+
+.fc-vhm-item-approval {
+  margin-top: 2px;
+  font-size: 10.5px;
+  color: #047857;
+  font-weight: 500;
+}
+
+/* Right preview pane */
+.fc-vhm-preview-pane {
+  display: flex;
+  flex-direction: column;
+  background-color: #0b1120;
+  min-height: 0;
+  position: relative;
+}
+
+.fc-vhm-preview-stage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fc-vhm-preview-banner {
+  padding: 8px 14px;
+  background-color: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 2;
+}
+
+.fc-vhm-preview-tag {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fc-vhm-preview-file {
+  color: #94a3b8;
+  font-size: 11.5px;
+  font-family: inherit;
+}
+
+.fc-vhm-preview-media {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  padding: 16px;
+}
+
+.fc-vhm-preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.fc-vhm-status-pane,
+.fc-vhm-empty-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #94a3b8;
+  font-size: 12.5px;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.fc-vhm-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: fc-vhm-spin 0.7s linear infinite;
+}
+
+@keyframes fc-vhm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fc-vhm-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--fc-border, #e2e8f0);
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--fc-bg-surface, #ffffff);
+  flex-shrink: 0;
+}
+
+.fc-vhm-btn-secondary {
+  padding: 7px 16px;
+  border-radius: var(--fc-radius-md, 8px);
+  background-color: var(--fc-bg-surface, #ffffff);
+  color: var(--fc-text-primary, #0f172a);
+  border: 1px solid var(--fc-border-strong, #cbd5e1);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.fc-vhm-btn-secondary:hover {
+  background-color: var(--fc-bg-subtle, #f8fafc);
+  border-color: #94a3b8;
+}

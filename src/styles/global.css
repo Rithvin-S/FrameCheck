@@ -1,3 +1,9 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Global Styles & UI Primitives (Phase 2A)
+   Visual Inspiration: Linear visual hierarchy, Figma creative workspace,
+   Notion information density, and Vercel restrained styling.
+   ========================================================================== */
+
 *,
 *::before,
 *::after {
@@ -12,8 +18,9 @@ body {
   background-color: var(--fc-bg-app);
   color: var(--fc-text-primary);
   font-family: var(--fc-font-sans);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: var(--fc-text-md, 15px);
+  line-height: var(--fc-leading-normal, 1.5);
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -25,18 +32,26 @@ body {
 h1,
 h2,
 h3,
+h4,
+h5,
+h6,
 p,
-ul {
+ul,
+ol,
+figure {
   margin: 0;
+  padding: 0;
 }
 
 a {
   color: var(--fc-accent);
   text-decoration: none;
+  transition: color 140ms ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--fc-accent-hover);
+  text-decoration: none;
 }
 
 :focus-visible {
@@ -44,65 +59,369 @@ a:hover {
   outline-offset: 2px;
 }
 
-/* Shared button primitives */
+/* ==========================================================================
+   1. Typography Scale Primitives (Linear-Inspired Hierarchy)
+   ========================================================================== */
+
+.fc-title-page {
+  font-size: var(--fc-text-2xl, 24px);
+  font-weight: var(--fc-font-weight-semibold, 600);
+  letter-spacing: var(--fc-tracking-tight, -0.02em);
+  line-height: var(--fc-leading-tight, 1.25);
+  color: var(--fc-text-primary);
+}
+
+.fc-title-section {
+  font-size: var(--fc-text-xl, 20px);
+  font-weight: var(--fc-font-weight-semibold, 600);
+  letter-spacing: var(--fc-tracking-tight, -0.015em);
+  line-height: var(--fc-leading-snug, 1.35);
+  color: var(--fc-text-primary);
+}
+
+.fc-title-component {
+  font-size: var(--fc-text-md, 15px);
+  font-weight: var(--fc-font-weight-semibold, 600);
+  line-height: var(--fc-leading-snug, 1.35);
+  color: var(--fc-text-primary);
+}
+
+.fc-text-body {
+  font-size: var(--fc-text-base, 14px);
+  line-height: var(--fc-leading-normal, 1.5);
+  color: var(--fc-text-primary);
+}
+
+.fc-text-body-sm {
+  font-size: var(--fc-text-sm, 12.5px);
+  line-height: var(--fc-leading-normal, 1.5);
+  color: var(--fc-text-secondary);
+}
+
+.fc-text-caption {
+  font-size: var(--fc-text-xs, 11px);
+  line-height: var(--fc-leading-snug, 1.35);
+  color: var(--fc-text-muted);
+}
+
+.fc-text-meta {
+  font-size: var(--fc-text-xs, 11px);
+  font-weight: var(--fc-font-weight-medium, 500);
+  color: var(--fc-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.fc-text-label {
+  font-size: var(--fc-text-sm, 12.5px);
+  font-weight: var(--fc-font-weight-medium, 500);
+  color: var(--fc-text-primary);
+}
+
+.fc-text-mono {
+  font-family: var(--fc-font-mono);
+  font-size: 0.9em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   2. Shared Button Primitives (Restrained, Interactive, Predictable)
+   ========================================================================== */
+
 .fc-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 9px 16px;
-  border-radius: var(--fc-radius-sm);
+  padding: 8px 14px;
+  border-radius: var(--fc-radius-sm, 6px);
   border: 1px solid transparent;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--fc-text-base, 14px);
+  font-weight: var(--fc-font-weight-medium, 500);
   line-height: 1.25;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  white-space: nowrap;
+  user-select: none;
+  box-sizing: border-box;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 80ms ease;
 }
 
 .fc-btn:hover {
   text-decoration: none;
 }
 
-.fc-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.fc-btn:active:not(:disabled) {
+  transform: translateY(0.5px);
 }
 
+.fc-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.fc-btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--fc-bg-surface), 0 0 0 4px var(--fc-accent);
+  outline: none;
+}
+
+/* Primary Button (Refined Action Highlight) */
 .fc-btn-primary {
   background-color: var(--fc-accent);
+  border-color: var(--fc-accent);
   color: #ffffff;
+  box-shadow: var(--fc-shadow-xs);
 }
 
 .fc-btn-primary:hover:not(:disabled) {
   background-color: var(--fc-accent-hover);
+  border-color: var(--fc-accent-hover);
+  color: #ffffff;
+  box-shadow: var(--fc-shadow-sm);
 }
 
+.fc-btn-primary:active:not(:disabled) {
+  background-color: var(--fc-accent-active, #1e40af);
+  border-color: var(--fc-accent-active, #1e40af);
+}
+
+/* Secondary Button (Default Surface Button) */
 .fc-btn-secondary {
   background-color: var(--fc-bg-surface);
   border-color: var(--fc-border-strong);
   color: var(--fc-text-primary);
+  box-shadow: var(--fc-shadow-xs);
 }
 
 .fc-btn-secondary:hover:not(:disabled) {
   background-color: var(--fc-bg-subtle);
+  border-color: var(--fc-border-hover, #94a3b8);
+  color: var(--fc-text-primary);
+}
+
+.fc-btn-secondary:active:not(:disabled) {
+  background-color: var(--fc-bg-active, #e2e8f0);
+}
+
+/* Ghost Button (Transparent, Low-Emphasis) */
+.fc-btn-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--fc-text-secondary);
+}
+
+.fc-btn-ghost:hover:not(:disabled) {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-primary);
+}
+
+.fc-btn-ghost:active:not(:disabled) {
+  background-color: var(--fc-bg-active, #e2e8f0);
+}
+
+/* Danger Button (Destructive Actions) */
+.fc-btn-danger {
+  background-color: var(--fc-danger);
+  border-color: var(--fc-danger);
+  color: #ffffff;
+  box-shadow: var(--fc-shadow-xs);
+}
+
+.fc-btn-danger:hover:not(:disabled) {
+  background-color: var(--fc-danger-hover);
+  border-color: var(--fc-danger-hover);
+}
+
+.fc-btn-danger-outline {
+  background-color: var(--fc-bg-surface);
+  border-color: var(--fc-danger-border);
+  color: var(--fc-danger);
+}
+
+.fc-btn-danger-outline:hover:not(:disabled) {
+  background-color: var(--fc-danger-soft);
+  border-color: var(--fc-danger);
+}
+
+/* Button Size Modifiers */
+.fc-btn-xs {
+  height: var(--fc-control-height-xs, 24px);
+  padding: 0 8px;
+  font-size: var(--fc-text-xs, 11px);
+  gap: 4px;
+  border-radius: var(--fc-radius-xs, 4px);
+  line-height: 1;
 }
 
 .fc-btn-sm {
-  padding: 6px 12px;
-  font-size: 13px;
+  height: var(--fc-control-height-sm, 28px);
+  padding: 0 10px;
+  font-size: var(--fc-text-sm, 12.5px);
+  gap: 6px;
+  line-height: 1;
 }
 
-/* Shared role badges */
+.fc-btn-lg {
+  height: var(--fc-control-height-lg, 40px);
+  padding: 0 18px;
+  font-size: var(--fc-text-md, 15px);
+  gap: 8px;
+  border-radius: var(--fc-radius-md, 8px);
+}
+
+/* ==========================================================================
+   3. Form & Input Primitives
+   ========================================================================== */
+
+.fc-input,
+.fc-textarea,
+.fc-select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--fc-radius-sm, 6px);
+  border: 1px solid var(--fc-border-strong);
+  background-color: var(--fc-bg-input);
+  color: var(--fc-text-primary);
+  font-family: inherit;
+  font-size: var(--fc-text-base, 14px);
+  line-height: 1.4;
+  box-sizing: border-box;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.fc-input:hover,
+.fc-textarea:hover,
+.fc-select:hover {
+  border-color: var(--fc-border-hover, #94a3b8);
+}
+
+.fc-input:focus,
+.fc-textarea:focus,
+.fc-select:focus {
+  outline: none;
+  border-color: var(--fc-accent);
+  box-shadow: 0 0 0 3px var(--fc-accent-subtle, rgba(37, 99, 235, 0.08));
+}
+
+.fc-input:disabled,
+.fc-textarea:disabled,
+.fc-select:disabled {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-tertiary, #94a3b8);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.fc-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fc-text-sm, 12.5px);
+  font-weight: var(--fc-font-weight-medium, 500);
+  color: var(--fc-text-primary);
+  margin-bottom: 4px;
+}
+
+.fc-field-hint {
+  font-size: var(--fc-text-xs, 11px);
+  color: var(--fc-text-muted);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   4. Surface & Card Primitives
+   ========================================================================== */
+
+.fc-surface-card {
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-md, 8px);
+  box-shadow: var(--fc-shadow-xs);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.fc-surface-card:hover {
+  border-color: var(--fc-border-strong);
+  box-shadow: var(--fc-shadow-sm);
+}
+
+.fc-surface-subtle {
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border-subtle);
+  border-radius: var(--fc-radius-sm, 6px);
+}
+
+.fc-surface-elevated {
+  background-color: var(--fc-bg-elevated);
+  border: 1px solid var(--fc-border-strong);
+  border-radius: var(--fc-radius-md, 8px);
+  box-shadow: var(--fc-shadow-popover);
+}
+
+.fc-divider {
+  height: 1px;
+  background-color: var(--fc-border);
+  border: none;
+  margin: 0;
+  width: 100%;
+}
+
+/* ==========================================================================
+   5. Badges, Pills & Keyboard Shortcuts
+   ========================================================================== */
+
+.fc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--fc-radius-full, 9999px);
+  font-size: var(--fc-text-xs, 11px);
+  font-weight: var(--fc-font-weight-semibold, 600);
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.fc-badge-neutral {
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  color: var(--fc-text-secondary);
+}
+
+.fc-badge-accent {
+  background-color: var(--fc-accent-soft);
+  border: 1px solid var(--fc-accent-border);
+  color: var(--fc-accent-text, #1d4ed8);
+}
+
+.fc-badge-success {
+  background-color: var(--fc-success-soft);
+  border: 1px solid var(--fc-success-border);
+  color: var(--fc-success-text, #15803d);
+}
+
+.fc-badge-warning {
+  background-color: var(--fc-warning-soft);
+  border: 1px solid var(--fc-warning-border);
+  color: var(--fc-warning-text, #b45309);
+}
+
+.fc-badge-danger {
+  background-color: var(--fc-danger-soft);
+  border: 1px solid var(--fc-danger-border);
+  color: var(--fc-danger-text, #b91c1c);
+}
+
+/* Role Badges (Backwards Compatible) */
 .fc-role-badge {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--fc-radius-full, 9999px);
+  font-size: var(--fc-text-xs, 11px);
+  font-weight: var(--fc-font-weight-semibold, 600);
   border: 1px solid var(--fc-border);
   background-color: var(--fc-bg-subtle);
   color: var(--fc-text-secondary);
@@ -117,43 +436,73 @@ a:hover {
 .fc-role-reviewer {
   background-color: var(--fc-accent-soft);
   border-color: var(--fc-accent-border);
-  color: var(--fc-accent);
+  color: var(--fc-accent-text, #1d4ed8);
 }
 
 .fc-role-admin {
   background-color: var(--fc-warning-soft);
   border-color: var(--fc-warning-border);
-  color: var(--fc-warning);
+  color: var(--fc-warning-text, #b45309);
 }
 
-/* Shared alert banners */
-.fc-alert {
-  padding: 11px 14px;
-  border-radius: var(--fc-radius-sm);
+/* Keyboard Shortcut Key Primitive */
+.fc-shortcut-kbd {
+  display: inline-block;
+  padding: 0 4px;
+  font-family: var(--fc-font-mono);
+  font-size: 9.5px;
+  font-weight: var(--fc-font-weight-semibold, 600);
+  line-height: 1.25;
+  color: var(--fc-text-muted);
+  background-color: var(--fc-bg-surface);
   border: 1px solid var(--fc-border);
-  font-size: 13.5px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   6. Semantic Alert Banners
+   ========================================================================== */
+
+.fc-alert {
+  padding: 10px 14px;
+  border-radius: var(--fc-radius-sm, 6px);
+  border: 1px solid var(--fc-border);
+  font-size: var(--fc-text-sm, 12.5px);
   line-height: 1.45;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .fc-alert-error {
   background-color: var(--fc-danger-soft);
   border-color: var(--fc-danger-border);
-  color: var(--fc-danger);
+  color: var(--fc-danger-text, #b91c1c);
 }
 
 .fc-alert-success {
   background-color: var(--fc-success-soft);
   border-color: var(--fc-success-border);
-  color: var(--fc-success);
+  color: var(--fc-success-text, #15803d);
+}
+
+.fc-alert-warning {
+  background-color: var(--fc-warning-soft);
+  border-color: var(--fc-warning-border);
+  color: var(--fc-warning-text, #b45309);
 }
 
 .fc-alert-info {
-  background-color: var(--fc-accent-soft);
-  border-color: var(--fc-accent-border);
-  color: var(--fc-accent-hover);
+  background-color: var(--fc-info-soft, #f0f9ff);
+  border-color: var(--fc-info-border, #bae6fd);
+  color: var(--fc-info-text, #0369a1);
 }
 
-/* Shared loading spinner */
+/* ==========================================================================
+   7. Loading Spinners
+   ========================================================================== */
+
 .fc-spinner-row {
   display: inline-flex;
   align-items: center;
@@ -173,5 +522,20 @@ a:hover {
 @keyframes fc-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   8. Accessibility & Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

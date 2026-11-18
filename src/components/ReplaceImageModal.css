@@ -1,0 +1,384 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Replace Image Modal Dialog
+   ========================================================================== */
+
+.fc-rim-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10050;
+  animation: fc-rim-fade-in 140ms ease-out;
+}
+
+@keyframes fc-rim-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fc-rim-card {
+  background-color: var(--fc-bg-surface, #ffffff);
+  border: 1px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-xl, 14px);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.2), 0 4px 10px rgba(15, 23, 42, 0.08);
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fc-rim-scale-up 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fc-rim-scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fc-rim-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--fc-border, #e2e8f0);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.fc-rim-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fc-rim-badge {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fc-accent, #6366f1);
+  background-color: var(--fc-accent-soft, #eef2ff);
+  letter-spacing: 0.02em;
+}
+
+.fc-rim-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fc-text-primary, #0f172a);
+  line-height: 1.3;
+}
+
+.fc-rim-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--fc-text-secondary, #475569);
+  line-height: 1.4;
+}
+
+.fc-rim-filename {
+  font-weight: 600;
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-rim-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--fc-text-muted, #94a3b8);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 120ms ease;
+}
+
+.fc-rim-close-btn:hover:not(:disabled) {
+  color: var(--fc-text-primary, #0f172a);
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+}
+
+.fc-rim-form {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+/* Dual Preview Grid */
+.fc-rim-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.fc-rim-preview-col {
+  border: 1px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-md, 8px);
+  background-color: var(--fc-bg-subtle, #f8fafc);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-rim-col-header {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--fc-border, #e2e8f0);
+  background-color: var(--fc-bg-surface, #ffffff);
+}
+
+.fc-rim-col-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-rim-col-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.fc-rim-tag-active {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.fc-rim-tag-proposed {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.fc-rim-col-media {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0b1120;
+  overflow: hidden;
+  position: relative;
+}
+
+.fc-rim-col-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.fc-rim-media-placeholder {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.fc-rim-drop-target {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #334155;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 12px;
+  text-align: center;
+  transition: all 140ms ease;
+  user-select: none;
+}
+
+.fc-rim-drop-target:hover,
+.fc-rim-drop-target-active {
+  border-color: #818cf8;
+  background-color: rgba(99, 102, 241, 0.1);
+  color: #ffffff;
+}
+
+.fc-rim-drop-hint {
+  font-size: 10.5px;
+  color: #94a3b8;
+}
+
+.fc-rim-col-meta {
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: var(--fc-text-secondary, #475569);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid var(--fc-border, #e2e8f0);
+  background-color: var(--fc-bg-surface, #ffffff);
+}
+
+.fc-rim-text-muted {
+  color: var(--fc-text-muted, #94a3b8);
+  font-style: italic;
+}
+
+.fc-rim-file-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fc-rim-hidden-input {
+  display: none;
+}
+
+/* Form inputs */
+.fc-rim-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fc-rim-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-rim-label-optional {
+  font-weight: 400;
+  color: var(--fc-text-muted, #94a3b8);
+}
+
+.fc-rim-textarea {
+  width: 100%;
+  border: 1px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-md, 8px);
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--fc-text-primary, #0f172a);
+  background-color: var(--fc-bg-surface, #ffffff);
+  resize: vertical;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+  box-sizing: border-box;
+}
+
+.fc-rim-textarea:focus {
+  border-color: var(--fc-accent, #6366f1);
+  box-shadow: 0 0 0 3px var(--fc-accent-soft, #eef2ff);
+}
+
+.fc-rim-char-count {
+  font-size: 11px;
+  color: var(--fc-text-muted, #94a3b8);
+  text-align: right;
+}
+
+.fc-rim-notice {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: var(--fc-radius-md, 8px);
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: #0369a1;
+  line-height: 1.4;
+}
+
+.fc-rim-notice-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.fc-rim-alert {
+  padding: 10px 14px;
+  border-radius: var(--fc-radius-md, 8px);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.fc-rim-alert-danger {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.fc-rim-alert-warning {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #b45309;
+}
+
+/* Buttons */
+.fc-rim-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--fc-border, #e2e8f0);
+}
+
+.fc-rim-btn {
+  padding: 8px 16px;
+  border-radius: var(--fc-radius-md, 8px);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-rim-btn-primary {
+  background-color: var(--fc-accent, #6366f1);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.fc-rim-btn-primary:hover:not(:disabled) {
+  background-color: #4f46e5;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+.fc-rim-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.fc-rim-btn-secondary {
+  background-color: var(--fc-bg-surface, #ffffff);
+  color: var(--fc-text-primary, #0f172a);
+  border: 1px solid var(--fc-border-strong, #cbd5e1);
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.fc-rim-btn-secondary:hover:not(:disabled) {
+  background-color: var(--fc-bg-subtle, #f8fafc);
+  border-color: var(--fc-border-strong, #94a3b8);
+}

@@ -1,0 +1,371 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Uploader Annotation Overlay & Correction Inspector
+   ========================================================================== */
+
+.fc-uiv-annotation-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 5;
+  user-select: none;
+}
+
+/* Annotation Group (Hit Target & Interaction) */
+.fc-uiv-ann-group {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 140ms ease;
+}
+
+.fc-uiv-ann-group:hover .fc-uiv-ann-shape {
+  stroke-width: 3.5px;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+.fc-uiv-ann-group:hover .fc-uiv-ann-badge-rect {
+  transform-origin: center center;
+  filter: brightness(1.15) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+/* Selected Annotation State */
+.fc-uiv-ann-group-selected .fc-uiv-ann-shape {
+  stroke: #38bdf8 !important;
+  stroke-width: 3.5px !important;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.85)) drop-shadow(0 0 12px rgba(14, 165, 233, 0.45));
+}
+
+.fc-uiv-ann-group-selected .fc-uiv-ann-badge-rect {
+  fill: #0284c7 !important;
+  stroke: #38bdf8 !important;
+  stroke-width: 2.5px !important;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+}
+
+/* Badge Base Styling */
+.fc-uiv-ann-badge-group {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.fc-uiv-ann-badge-rect {
+  transition: all 120ms ease;
+}
+
+/* Floating Correction Comment Card */
+.fc-uiv-comment-card {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 340px;
+  max-width: calc(100vw - 320px);
+  background: var(--fc-bg-surface, #ffffff);
+  border: 1px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-lg, 12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22), 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 40;
+  animation: fc-uiv-card-slide-up 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+}
+
+[data-theme='dark'] .fc-uiv-comment-card {
+  background: rgba(15, 23, 42, 0.94);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+@keyframes fc-uiv-card-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fc-uiv-card-header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--fc-border, #e2e8f0);
+  background: var(--fc-bg-subtle, #f8fafc);
+}
+
+[data-theme='dark'] .fc-uiv-card-header {
+  background: rgba(30, 41, 59, 0.6);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.fc-uiv-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fc-uiv-card-number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: var(--fc-accent, #2563eb);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.fc-uiv-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fc-text-primary, #0f172a);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc-uiv-card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.fc-uiv-card-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--fc-text-muted, #94a3b8);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 120ms ease;
+  line-height: 1;
+}
+
+.fc-uiv-card-close-btn:hover {
+  background-color: var(--fc-border, #e2e8f0);
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-uiv-card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fc-uiv-card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--fc-text-muted, #64748b);
+}
+
+.fc-uiv-card-reviewer {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fc-uiv-card-reviewer strong {
+  color: var(--fc-text-secondary, #334155);
+}
+
+.fc-uiv-card-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.fc-uiv-card-status-open {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+}
+
+.fc-uiv-card-status-resolved {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #059669;
+}
+
+.fc-uiv-card-comment-box {
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+  border-radius: var(--fc-radius-sm, 6px);
+  padding: 10px 12px;
+  border-left: 3px solid var(--fc-accent, #2563eb);
+}
+
+[data-theme='dark'] .fc-uiv-card-comment-box {
+  background-color: rgba(30, 41, 59, 0.5);
+  border-left-color: #38bdf8;
+}
+
+.fc-uiv-card-comment-box-empty {
+  border-left-color: var(--fc-border, #cbd5e1);
+  background-color: transparent;
+  border: 1px dashed var(--fc-border, #cbd5e1);
+}
+
+.fc-uiv-card-comment-label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fc-text-muted, #64748b);
+  margin-bottom: 4px;
+}
+
+.fc-uiv-card-comment-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fc-text-primary, #0f172a);
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.fc-uiv-card-comment-empty {
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--fc-text-muted, #94a3b8);
+}
+
+.fc-uiv-card-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.fc-uiv-card-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 500;
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+  color: var(--fc-text-secondary, #475569);
+  border: 1px solid var(--fc-border, #e2e8f0);
+}
+
+.fc-uiv-card-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--fc-border, #e2e8f0);
+  background: var(--fc-bg-subtle, #f8fafc);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11.5px;
+}
+
+[data-theme='dark'] .fc-uiv-card-footer {
+  background: rgba(30, 41, 59, 0.4);
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.fc-uiv-card-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--fc-border, #cbd5e1);
+  border-radius: 4px;
+  background: var(--fc-bg-surface, #ffffff);
+  color: var(--fc-text-secondary, #475569);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.fc-uiv-card-nav-btn:hover:not(:disabled) {
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-uiv-card-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.fc-uiv-card-counter {
+  font-size: 11px;
+  color: var(--fc-text-muted, #94a3b8);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Filmstrip Thumbnail Indicator */
+.fc-uiv-thumb-ann-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: #38bdf8;
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  z-index: 2;
+}
+
+.fc-uiv-thumb-ann-sub {
+  font-size: 11px;
+  color: #0284c7;
+  font-weight: 600;
+}
+
+[data-theme='dark'] .fc-uiv-thumb-ann-sub {
+  color: #38bdf8;
+}
+
+.fc-uiv-stage-annotations-pill {
+  font-size: 11px;
+  font-weight: 600;
+  color: #0284c7;
+  background-color: rgba(2, 132, 199, 0.12);
+  border: 1px solid rgba(2, 132, 199, 0.28);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+[data-theme='dark'] .fc-uiv-stage-annotations-pill {
+  color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.3);
+}

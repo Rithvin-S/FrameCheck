@@ -1,0 +1,169 @@
+.fc-whiteboard-canvas-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #f8fafc;
+  user-select: none;
+  touch-action: none;
+}
+
+.fc-wb-grid-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.fc-wb-svg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.fc-wb-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Shapes & Connectors */
+.fc-wb-interactive-shape {
+  cursor: move;
+  pointer-events: auto;
+  transition: stroke-width 0.1s ease;
+}
+
+.fc-wb-interactive-shape:hover {
+  stroke-width: 3.5;
+}
+
+.fc-wb-handle {
+  cursor: grab;
+  pointer-events: auto;
+  transition: transform 0.1s ease;
+}
+
+.fc-wb-handle:hover {
+  transform: scale(1.3);
+}
+
+/* Sticky Notes */
+.fc-wb-sticky-note {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 8px 14px;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.06);
+  cursor: move;
+  pointer-events: auto;
+  transition: box-shadow 0.15s ease;
+}
+
+.fc-wb-sticky-note:hover {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.fc-wb-sticky-note.selected {
+  outline: 2px solid var(--fc-primary, #2563eb);
+  outline-offset: 2px;
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.2);
+}
+
+.fc-wb-sticky-textarea {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: #1e293b;
+  cursor: text;
+}
+
+.fc-wb-sticky-textarea::placeholder {
+  color: rgba(30, 41, 59, 0.45);
+}
+
+.fc-wb-sticky-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(30, 41, 59, 0.55);
+}
+
+.fc-wb-creator-tag {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* Text Element Box */
+.fc-wb-text-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: move;
+  pointer-events: auto;
+  border: 1px dashed transparent;
+}
+
+.fc-wb-text-box:hover {
+  border-color: rgba(15, 23, 42, 0.2);
+}
+
+.fc-wb-text-box.selected {
+  border-color: var(--fc-primary, #2563eb);
+  background-color: rgba(37, 99, 235, 0.02);
+}
+
+.fc-wb-plain-textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: text;
+}
+
+/* Resize Handles */
+.fc-wb-resize-handle {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background-color: #ffffff;
+  border: 2px solid var(--fc-primary, #2563eb);
+  border-radius: 2px;
+  cursor: nwse-resize;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+

@@ -22,6 +22,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+  background-color: #0b0f19;
 }
 
 .fc-review-state-main {
@@ -58,36 +60,51 @@
 .fc-image-completion-control {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding-right: 8px;
-  margin-right: 2px;
+  margin-right: 4px;
   border-right: 1px solid var(--fc-border);
-}
-
-.fc-image-completed-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background-color: var(--fc-success-soft);
-  border: 1px solid var(--fc-success-border);
-  color: var(--fc-success);
-  font-size: 12px;
-  font-weight: 600;
+  flex-shrink: 0;
   white-space: nowrap;
 }
 
+.fc-image-completion-control .fc-btn {
+  height: 28px;
+  padding: 0 9px;
+  font-size: 12px;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-sizing: border-box;
+}
+
+.fc-image-completed-pill,
 .fc-image-inreview-pill {
   display: inline-flex;
   align-items: center;
-  padding: 3px 9px;
+  height: 22px;
+  padding: 0 8px;
   border-radius: 999px;
-  background-color: var(--fc-accent-soft);
-  border: 1px solid var(--fc-accent-border);
-  color: var(--fc-accent);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.fc-image-completed-pill {
+  background-color: var(--fc-success-soft);
+  border: 1px solid var(--fc-success-border);
+  color: var(--fc-success-text, #15803d);
+}
+
+.fc-image-inreview-pill {
+  background-color: var(--fc-accent-soft);
+  border: 1px solid var(--fc-accent-border);
+  color: var(--fc-accent-text, #1d4ed8);
 }
 
 .fc-btn-success-outline {
@@ -110,6 +127,32 @@
   flex-shrink: 0;
 }
 
+/* Phase 22C: Autosave failure notification banner */
+.fc-autosave-error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background-color: #fef2f2;
+  border-bottom: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 13px;
+  font-weight: 500;
+  flex-shrink: 0;
+  z-index: 40;
+}
+
+.fc-autosave-error-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-autosave-retry-btn {
+  font-weight: 600;
+  margin-left: 12px;
+}
+
 @media (max-width: 768px) {
   .fc-review-workspace {
     height: auto;
@@ -123,4 +166,268 @@
     overflow: visible;
   }
 }
+
+.fc-action-notice-toast {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 8px 18px;
+  background-color: rgba(15, 23, 42, 0.92);
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  animation: fc-toast-fadein 0.2s ease;
+  white-space: nowrap;
+}
+
+@keyframes fc-toast-fadein {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Phase 17: Focus Mode Workspace Styles */
+.fc-review-workspace.fc-review-workspace-focus {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background-color: var(--fc-bg-subtle, #f8fafc);
+}
+
+.fc-review-workspace-focus .fc-workspace-body {
+  width: 100%;
+  height: 100%;
+}
+
+.fc-review-workspace-focus .fc-workspace-canvas-area {
+  width: 100%;
+  height: 100%;
+}
+
+/* Modal backdrop for creating draft annotations inside Focus Mode */
+.fc-focus-draft-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.fc-focus-draft-card-container {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg, 12px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.24);
+  padding: 16px;
+  animation: fc-focus-draft-pop 0.16s ease-out;
+}
+
+@keyframes fc-focus-draft-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Phase 21B: Floating Restore Pills for Hidden Panels */
+.fc-panel-restore-pill {
+  position: absolute;
+  top: 12px;
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-full, 9999px);
+  box-shadow: var(--fc-shadow-md);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  cursor: pointer;
+  transition: all 140ms ease;
+  user-select: none;
+  animation: fc-pill-slide-in 0.18s ease-out;
+}
+
+@keyframes fc-pill-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fc-panel-restore-pill:hover {
+  background-color: var(--fc-bg-surface);
+  border-color: var(--fc-accent);
+  color: var(--fc-accent);
+  box-shadow: var(--fc-shadow-lg);
+  transform: translateY(-1px);
+}
+
+.fc-panel-restore-pill.fc-restore-left {
+  left: 12px;
+}
+
+.fc-panel-restore-pill.fc-restore-right {
+  right: 12px;
+}
+
+.fc-restore-kbd {
+  font-family: var(--fc-font-mono, monospace);
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 1px 4px;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  border-radius: 3px;
+  color: var(--fc-text-muted);
+}
+
+/* Phase 22D: Presentation Mode Layout */
+.fc-review-workspace.fc-review-workspace-presentation {
+  background-color: #0b0f19;
+  user-select: none;
+}
+
+.fc-review-workspace.fc-review-workspace-presentation .fc-workspace-canvas-area {
+  background-color: #0b0f19;
+}
+
+.fc-review-workspace.fc-review-workspace-presentation .fc-preview-toolbar,
+.fc-review-workspace.fc-review-workspace-presentation .fc-canvas-floating-controls {
+  display: none !important;
+}
+
+.fc-review-workspace.fc-review-workspace-presentation .fc-preview-stage {
+  background-color: #0b0f19 !important;
+}
+
+/* Image Versioning: Review Workspace Replacement Banner */
+.fc-pending-replacement-banner {
+  margin: 10px 16px 0;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(217, 119, 6, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--fc-radius-md, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.08);
+  animation: fc-fade-in 180ms ease;
+  z-index: 5;
+}
+
+.fc-pending-replacement-banner-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.fc-pending-replacement-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.fc-pending-replacement-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.fc-pending-replacement-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #d97706;
+}
+
+[data-theme='dark'] .fc-pending-replacement-heading {
+  color: #fbbf24;
+}
+
+.fc-pending-replacement-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #b45309;
+}
+
+[data-theme='dark'] .fc-pending-replacement-tag {
+  color: #fde68a;
+  background-color: rgba(245, 158, 11, 0.3);
+}
+
+.fc-pending-replacement-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--fc-text-secondary);
+  line-height: 1.4;
+}
+
+.fc-pending-replacement-msg {
+  display: block;
+  font-style: italic;
+  color: var(--fc-text-primary);
+  margin-top: 2px;
+}
+
+.fc-pending-replacement-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.fc-btn-pending-pulse {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  border-color: #d97706 !important;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(217, 119, 6, 0.25);
+}
+
+.fc-btn-pending-pulse:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+}
+
+
 

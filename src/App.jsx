@@ -3,6 +3,7 @@ import { Header } from './components/Header.jsx';
 import { ProtectedRoute } from './components/ProtectedRoute.jsx';
 import { PublicOnlyRoute } from './components/PublicOnlyRoute.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import { AdminUsersPage } from './pages/AdminUsersPage.jsx';
 import { AnalyticsPage } from './pages/AnalyticsPage.jsx';
 import { BatchDetailPage } from './pages/BatchDetailPage.jsx';
@@ -11,15 +12,19 @@ import { DashboardPage } from './pages/DashboardPage.jsx';
 import { LoginPage } from './pages/LoginPage.jsx';
 import { RegisterPage } from './pages/RegisterPage.jsx';
 import { ReviewWorkspacePage } from './pages/ReviewWorkspacePage.jsx';
+import { BatchWhiteboardPage } from './pages/BatchWhiteboardPage.jsx';
+import { UploaderImageViewerPage } from './pages/UploaderImageViewerPage.jsx';
 import { ROLES } from './services/profileService.js';
 import './App.css';
 
 function AppShell() {
   const isReviewWorkspace = Boolean(useMatch('/batches/:batchId/review'));
+  const isWhiteboard = Boolean(useMatch('/batches/:batchId/whiteboard'));
+  const isUploaderViewer = Boolean(useMatch('/batches/:batchId/view'));
 
   return (
     <div className="fc-app-shell">
-      {isReviewWorkspace ? null : <Header />}
+      {isReviewWorkspace || isWhiteboard || isUploaderViewer ? null : <Header />}
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route
@@ -71,10 +76,26 @@ function AppShell() {
           }
         />
         <Route
+          path="/batches/:batchId/view"
+          element={
+            <ProtectedRoute>
+              <UploaderImageViewerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/batches/:batchId/review"
           element={
             <ProtectedRoute>
               <ReviewWorkspacePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/batches/:batchId/whiteboard"
+          element={
+            <ProtectedRoute>
+              <BatchWhiteboardPage />
             </ProtectedRoute>
           }
         />
@@ -99,7 +120,9 @@ export function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppShell />
+        <ThemeProvider>
+          <AppShell />
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   );

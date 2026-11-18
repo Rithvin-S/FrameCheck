@@ -1,0 +1,103 @@
+.fc-whiteboard-toolbar-container {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.fc-whiteboard-toolbar {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: var(--fc-bg-surface, #ffffff);
+  border: 1px solid var(--fc-border-strong, #cbd5e1);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  user-select: none;
+}
+
+.fc-toolbar-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.fc-wb-tool-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--fc-text-secondary, #475569);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fc-wb-tool-btn:hover {
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-wb-tool-btn.active {
+  background-color: var(--fc-primary-soft, #eff6ff);
+  color: var(--fc-primary, #2563eb);
+  border-color: var(--fc-primary-border, #bfdbfe);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);
+}
+
+.fc-wb-tool-delete {
+  color: var(--fc-danger, #dc2626);
+}
+
+.fc-wb-tool-delete:hover {
+  background-color: var(--fc-danger-soft, #fef2f2);
+  color: var(--fc-danger, #dc2626);
+}
+
+.fc-wb-divider {
+  width: 1px;
+  height: 22px;
+  background-color: var(--fc-border, #e2e8f0);
+  margin: 0 4px;
+}
+
+.fc-wb-color-chips {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 4px;
+}
+
+.fc-wb-color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.fc-wb-color-swatch:hover {
+  transform: scale(1.2);
+}
+
+.fc-wb-color-swatch.active {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--fc-primary, #2563eb);
+}
+
+.fc-wb-readonly-badge {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fc-text-muted, #64748b);
+  padding: 4px 10px;
+}
+

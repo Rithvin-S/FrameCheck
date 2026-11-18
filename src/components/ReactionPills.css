@@ -1,0 +1,145 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Reaction Pills (Phase 2D Redesign)
+   Compact, restrained emoji reaction bar for annotation comments.
+   ========================================================================== */
+
+.fc-reactions-container {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.fc-reaction-pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.fc-reaction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 7px;
+  background-color: var(--fc-bg-subtle);
+  border: 1px solid var(--fc-border);
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--fc-text-secondary);
+  cursor: pointer;
+  transition: all 120ms ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.fc-reaction-pill:hover:not(:disabled) {
+  background-color: var(--fc-bg-surface);
+  border-color: var(--fc-border-strong);
+  color: var(--fc-text-primary);
+}
+
+.fc-reaction-pill.active {
+  background-color: var(--fc-accent-soft);
+  border-color: var(--fc-accent-border);
+  color: var(--fc-accent);
+  font-weight: 600;
+}
+
+.fc-reaction-emoji {
+  font-size: 12.5px;
+  line-height: 1;
+}
+
+.fc-reaction-count {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Add Reaction Button */
+.fc-reaction-picker-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.fc-add-reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 22px;
+  padding: 0 6px;
+  background: transparent;
+  border: 1px dashed var(--fc-border-strong);
+  border-radius: 999px;
+  color: var(--fc-text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 120ms ease;
+  box-sizing: border-box;
+}
+
+.fc-add-reaction-btn:hover {
+  background-color: var(--fc-bg-subtle);
+  color: var(--fc-text-primary);
+  border-style: solid;
+  border-color: var(--fc-border-strong);
+}
+
+.fc-add-reaction-plus {
+  font-weight: 700;
+  font-size: 10.5px;
+}
+
+/* Emoji Popover Picker */
+.fc-emoji-popover {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  background-color: var(--fc-bg-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: 999px;
+  box-shadow: var(--fc-shadow-md);
+  z-index: 1050;
+  animation: fc-popover-scale 120ms ease;
+}
+
+@keyframes fc-popover-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fc-popover-emoji-btn {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease;
+  padding: 0;
+}
+
+.fc-popover-emoji-btn:hover {
+  transform: scale(1.2);
+  background-color: var(--fc-bg-subtle);
+}
+
+.fc-popover-emoji-btn.reacted {
+  background-color: var(--fc-accent-soft);
+}

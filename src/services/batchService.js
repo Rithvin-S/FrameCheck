@@ -12,8 +12,15 @@ export const REVIEW_STATUS_LABELS = {
   [REVIEW_STATUSES.REVIEW_COMPLETED]: 'Review Completed',
 };
 
-const BATCH_IMAGE_FIELDS =
+const BATCH_IMAGE_FIELDS_LEGACY =
   'id, batch_id, original_filename, relative_path, storage_path, mime_type, file_size, display_order, is_completed, completed_at, completed_by, created_at';
+
+const BATCH_IMAGE_FIELDS_V2 =
+  'id, batch_id, original_filename, relative_path, storage_path, mime_type, file_size, display_order, is_completed, completed_at, completed_by, created_at, current_version_number, current_version_id, replacement_status, pending_version_id';
+
+let hasVersionColumns = true;
+
+const BATCH_IMAGE_FIELDS = BATCH_IMAGE_FIELDS_LEGACY;
 
 function getClientOrThrow() {
   if (!supabase) {
@@ -174,18 +181,35 @@ export async function createBatch({ name, ownerId }) {
  */
 export async function listBatchImages(batchId) {
   const client = getClientOrThrow();
-  const { data, error } = await client
+  const fields = hasVersionColumns ? BATCH_IMAGE_FIELDS_V2 : BATCH_IMAGE_FIELDS_LEGACY;
+  let { data, error } = await client
     .from('batch_images')
-    .select(BATCH_IMAGE_FIELDS)
+    .select(fields)
     .eq('batch_id', batchId)
     .order('display_order', { ascending: true })
     .order('created_at', { ascending: true });
+
+  if (error && hasVersionColumns && (error.code === '42703' || error.message?.includes('does not exist'))) {
+    hasVersionColumns = false;
+    const res = await client
+      .from('batch_images')
+      .select(BATCH_IMAGE_FIELDS_LEGACY)
+      .eq('batch_id', batchId)
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: true });
+    data = res.data;
+    error = res.error;
+  }
 
   if (error) {
     throw error;
   }
 
-  return data ?? [];
+  return (data ?? []).map((img) => ({
+    ...img,
+    current_version_number: img.current_version_number ?? 1,
+    replacement_status: img.replacement_status ?? 'none',
+  }));
 }
 
 /**

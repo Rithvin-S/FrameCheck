@@ -1,49 +1,256 @@
+/* ==========================================================================
+   FrameCheck 2.0 — Design Tokens (Phase 2A: Visual Design Foundation)
+   Visual Inspiration: Linear visual hierarchy, Figma creative canvas,
+   Notion information organization, and Vercel restrained styling.
+   Primary Target: Refined Light Theme with Full Dark Mode Compatibility.
+   ========================================================================== */
+
 :root {
-  /* Light theme surface palette */
-  --fc-bg-app: #f8fafc;
-  --fc-bg-surface: #ffffff;
-  --fc-bg-subtle: #f1f5f9;
+  /* ------------------------------------------------------------------------
+     1. Surface & Background Palette (Light Theme)
+     ------------------------------------------------------------------------ */
+  --fc-bg-app: #f8fafc;        /* Soft neutral off-white workspace background */
+  --fc-bg-surface: #ffffff;    /* Pure white primary cards & panels */
+  --fc-bg-subtle: #f1f5f9;     /* Subtle neutral grey for pills, tabs, secondary controls */
+  --fc-bg-muted: #f8fafc;      /* Muted fallback surface */
+  --fc-bg-canvas: #f1f5f9;     /* Dedicated image preview canvas stage background */
+  --fc-bg-elevated: #ffffff;   /* Elevated surface for modals, popovers, dropdowns */
+  --fc-bg-input: #ffffff;      /* Form input background */
+  --fc-bg-hover: #f1f5f9;      /* Standard hover surface */
+  --fc-bg-active: #e2e8f0;     /* Pressed / active surface */
 
-  /* Borders */
-  --fc-border: #e2e8f0;
-  --fc-border-strong: #cbd5e1;
+  /* ------------------------------------------------------------------------
+     2. Border System (Light Theme)
+     ------------------------------------------------------------------------ */
+  --fc-border: #e2e8f0;        /* Default low-contrast border (Slate 200) */
+  --fc-border-subtle: #f1f5f9; /* Subtle divider / internal border (Slate 100) */
+  --fc-border-strong: #cbd5e1; /* Prominent card / container border (Slate 300) */
+  --fc-border-hover: #94a3b8;  /* Interactive hover border */
+  --fc-border-focus: #2563eb;  /* Focus ring border */
 
-  /* Typography colors */
-  --fc-text-primary: #0f172a;
-  --fc-text-secondary: #475569;
-  --fc-text-muted: #64748b;
+  /* ------------------------------------------------------------------------
+     3. Typography Colors (Light Theme)
+     ------------------------------------------------------------------------ */
+  --fc-text-primary: #0f172a;   /* Deep neutral charcoal for titles & primary text (Slate 900) */
+  --fc-text-secondary: #475569; /* Muted grey for descriptions & metadata (Slate 600) */
+  --fc-text-muted: #64748b;     /* Tertiary hint & caption text (Slate 500) */
+  --fc-text-tertiary: #94a3b8;  /* Low-emphasis placeholders & disabled text (Slate 400) */
+  --fc-text-inverse: #ffffff;   /* Pure white text on dark or accent surfaces */
 
-  /* Brand accent */
-  --fc-accent: #2563eb;
-  --fc-accent-hover: #1d4ed8;
-  --fc-accent-soft: #eff6ff;
-  --fc-accent-border: #bfdbfe;
+  /* ------------------------------------------------------------------------
+     4. Brand Accent System (Refined FrameCheck Blue)
+     ------------------------------------------------------------------------ */
+  --fc-accent: #2563eb;                    /* Primary brand accent (Blue 600) */
+  --fc-accent-hover: #1d4ed8;              /* Hover state (Blue 700) */
+  --fc-accent-active: #1e40af;             /* Pressed / active state (Blue 800) */
+  --fc-accent-soft: #eff6ff;               /* Light tint for selected rows & badges (Blue 50) */
+  --fc-accent-subtle: rgba(37, 99, 235, 0.08); /* 8% translucent accent tint */
+  --fc-accent-border: #bfdbfe;             /* Border for accent badges & active pills (Blue 200) */
+  --fc-accent-text: #1d4ed8;               /* High-contrast text on accent-soft backgrounds */
 
-  /* Semantic status & role tokens */
+  /* ------------------------------------------------------------------------
+     5. Semantic Status & Role Palette
+     ------------------------------------------------------------------------ */
+  /* Danger / Error / Rejected */
   --fc-danger: #dc2626;
+  --fc-danger-hover: #b91c1c;
   --fc-danger-soft: #fef2f2;
   --fc-danger-border: #fecaca;
+  --fc-danger-text: #b91c1c;
 
+  /* Success / Approved / Completed */
   --fc-success: #15803d;
+  --fc-success-hover: #166534;
   --fc-success-soft: #f0fdf4;
   --fc-success-border: #bbf7d0;
+  --fc-success-text: #15803d;
 
+  /* Warning / In Review / Attention */
   --fc-warning: #b45309;
+  --fc-warning-hover: #92400e;
   --fc-warning-soft: #fffbeb;
   --fc-warning-border: #fde68a;
+  --fc-warning-text: #b45309;
 
-  /* Typography & layout */
+  /* Info / Guidance / Onboarding */
+  --fc-info: #0284c7;
+  --fc-info-hover: #0369a1;
+  --fc-info-soft: #f0f9ff;
+  --fc-info-border: #bae6fd;
+  --fc-info-text: #0369a1;
+
+  /* ------------------------------------------------------------------------
+     6. Typography Scale & Weights
+     ------------------------------------------------------------------------ */
   --fc-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, sans-serif;
   --fc-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --fc-header-height: 60px;
+  /* Type Scale */
+  --fc-text-xs: 11px;
+  --fc-text-sm: 12.5px;
+  --fc-text-base: 14px;
+  --fc-text-md: 15px;
+  --fc-text-lg: 17px;
+  --fc-text-xl: 20px;
+  --fc-text-2xl: 24px;
+  --fc-text-3xl: 30px;
+
+  /* Font Weights */
+  --fc-font-weight-regular: 400;
+  --fc-font-weight-medium: 500;
+  --fc-font-weight-semibold: 600;
+  --fc-font-weight-bold: 700;
+
+  /* Line Heights */
+  --fc-leading-tight: 1.25;
+  --fc-leading-snug: 1.35;
+  --fc-leading-normal: 1.5;
+  --fc-leading-relaxed: 1.6;
+
+  /* Letter Spacing */
+  --fc-tracking-tight: -0.02em;
+  --fc-tracking-normal: 0em;
+  --fc-tracking-wide: 0.025em;
+
+  /* ------------------------------------------------------------------------
+     7. Spacing System (4px / 8px Rhythm)
+     ------------------------------------------------------------------------ */
+  --fc-space-0: 0px;
+  --fc-space-1: 4px;
+  --fc-space-2: 8px;
+  --fc-space-3: 12px;
+  --fc-space-4: 16px;
+  --fc-space-5: 20px;
+  --fc-space-6: 24px;
+  --fc-space-8: 32px;
+  --fc-space-10: 40px;
+  --fc-space-12: 48px;
+  --fc-space-16: 64px;
+
+  /* Layout Dimensions */
+  --fc-header-height: 56px;
+  --fc-review-header-height: 52px;
   --fc-max-width: 1440px;
   --fc-space-x: 32px;
+
+  /* ------------------------------------------------------------------------
+     8. Radii System
+     ------------------------------------------------------------------------ */
+  --fc-radius-xs: 4px;
   --fc-radius-sm: 6px;
-  --fc-radius-md: 10px;
-  --fc-radius-lg: 14px;
-  --fc-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --fc-radius-md: 8px;
+  --fc-radius-lg: 12px;
+  --fc-radius-xl: 16px;
+  --fc-radius-full: 9999px;
+
+  /* ------------------------------------------------------------------------
+     9. Realistic, Restrained Shadow System (Linear / Figma / Vercel Style)
+     ------------------------------------------------------------------------ */
+  --fc-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --fc-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  --fc-shadow-md: 0 4px 8px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);
+  --fc-shadow-lg: 0 12px 20px -3px rgba(15, 23, 42, 0.09), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
+  --fc-shadow-xl: 0 20px 28px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -4px rgba(15, 23, 42, 0.04);
+  --fc-shadow-popover: 0 10px 25px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+  --fc-shadow-inner: inset 0 1px 2px rgba(15, 23, 42, 0.05);
+
+  /* ------------------------------------------------------------------------
+     10. Standard Control Heights
+     ------------------------------------------------------------------------ */
+  --fc-control-height-xs: 24px;
+  --fc-control-height-sm: 28px;
+  --fc-control-height-md: 32px;
+  --fc-control-height-lg: 40px;
+
+  /* ------------------------------------------------------------------------
+     11. Layering / Z-Index Scale
+     ------------------------------------------------------------------------ */
+  --fc-z-base: 0;
+  --fc-z-canvas: 10;
+  --fc-z-toolbar: 20;
+  --fc-z-header: 30;
+  --fc-z-popover: 40;
+  --fc-z-dropdown: 50;
+  --fc-z-modal-backdrop: 90;
+  --fc-z-modal: 100;
+  --fc-z-toast: 110;
+  --fc-z-tooltip: 120;
+}
+
+/* ==========================================================================
+   Dark Mode Palette Overrides (Full Compatibility)
+   ========================================================================== */
+[data-theme='dark'],
+:root.dark-theme,
+body.dark-theme {
+  /* Surfaces */
+  --fc-bg-app: #090d16;
+  --fc-bg-surface: #111827;
+  --fc-bg-subtle: #1e293b;
+  --fc-bg-muted: #1e293b;
+  --fc-bg-canvas: #0b1120;
+  --fc-bg-elevated: #1e293b;
+  --fc-bg-input: #1f2937;
+  --fc-bg-hover: #334155;
+  --fc-bg-active: #475569;
+
+  /* Borders */
+  --fc-border: #334155;
+  --fc-border-subtle: #1e293b;
+  --fc-border-strong: #475569;
+  --fc-border-hover: #64748b;
+  --fc-border-focus: #3b82f6;
+
+  /* Typography colors */
+  --fc-text-primary: #f8fafc;
+  --fc-text-secondary: #cbd5e1;
+  --fc-text-muted: #94a3b8;
+  --fc-text-tertiary: #64748b;
+  --fc-text-inverse: #0f172a;
+
+  /* Brand accent */
+  --fc-accent: #3b82f6;
+  --fc-accent-hover: #60a5fa;
+  --fc-accent-active: #2563eb;
+  --fc-accent-soft: rgba(59, 130, 246, 0.18);
+  --fc-accent-subtle: rgba(59, 130, 246, 0.12);
+  --fc-accent-border: rgba(59, 130, 246, 0.4);
+  --fc-accent-text: #60a5fa;
+
+  /* Semantic status tokens */
+  --fc-danger: #ef4444;
+  --fc-danger-hover: #f87171;
+  --fc-danger-soft: rgba(239, 68, 68, 0.18);
+  --fc-danger-border: rgba(239, 68, 68, 0.4);
+  --fc-danger-text: #f87171;
+
+  --fc-success: #22c55e;
+  --fc-success-hover: #4ade80;
+  --fc-success-soft: rgba(34, 197, 94, 0.18);
+  --fc-success-border: rgba(34, 197, 94, 0.4);
+  --fc-success-text: #4ade80;
+
+  --fc-warning: #f59e0b;
+  --fc-warning-hover: #fbbf24;
+  --fc-warning-soft: rgba(245, 158, 11, 0.18);
+  --fc-warning-border: rgba(245, 158, 11, 0.4);
+  --fc-warning-text: #fbbf24;
+
+  --fc-info: #38bdf8;
+  --fc-info-hover: #7dd3fc;
+  --fc-info-soft: rgba(56, 189, 248, 0.18);
+  --fc-info-border: rgba(56, 189, 248, 0.4);
+  --fc-info-text: #38bdf8;
+
+  /* Shadows */
+  --fc-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --fc-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --fc-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+  --fc-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.6);
+  --fc-shadow-xl: 0 20px 32px rgba(0, 0, 0, 0.7);
+  --fc-shadow-popover: 0 10px 28px rgba(0, 0, 0, 0.65);
+  --fc-shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {

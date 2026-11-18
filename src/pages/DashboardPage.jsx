@@ -7,7 +7,7 @@ import {
   REVIEW_STATUS_LABELS,
   listBatches,
 } from '../services/batchService.js';
-import { ROLES, formatRoleLabel } from '../services/profileService.js';
+import { ROLES, formatRoleLabel, canUserReview } from '../services/profileService.js';
 import './DashboardPage.css';
 
 const ROLE_SUBTITLES = {
@@ -117,8 +117,8 @@ export function DashboardPage() {
     [batches]
   );
 
-  const showOwnerColumn =
-    profile.role === ROLES.REVIEWER || profile.role === ROLES.ADMIN;
+  const canReview = canUserReview(profile);
+  const showOwnerColumn = canReview;
 
   return (
     <main className="fc-page-main">
@@ -126,7 +126,7 @@ export function DashboardPage() {
         <div className="fc-page-title-group">
           <h1 className="fc-page-title">Image Batches</h1>
           <p className="fc-page-subtitle">
-            {ROLE_SUBTITLES[profile.role] ?? ROLE_SUBTITLES[ROLES.UPLOADER]}
+            {ROLE_SUBTITLES[profile?.role] ?? ROLE_SUBTITLES[ROLES.UPLOADER]}
           </p>
         </div>
 
@@ -242,14 +242,25 @@ export function DashboardPage() {
                       </td>
                       <td className="fc-action-col">
                         <div className="fc-row-actions">
-                          {batch.imageCount > 0 ? (
-                            <Link
-                              to={`/batches/${batch.id}/review`}
-                              className="fc-btn fc-btn-primary fc-btn-sm"
-                            >
-                              Review
-                            </Link>
-                          ) : null}
+                          {canReview ? (
+                            batch.imageCount > 0 ? (
+                              <Link
+                                to={`/batches/${batch.id}/review`}
+                                className="fc-btn fc-btn-primary fc-btn-sm"
+                              >
+                                Review
+                              </Link>
+                            ) : null
+                          ) : (
+                            batch.imageCount > 0 ? (
+                              <Link
+                                to={`/batches/${batch.id}/view`}
+                                className="fc-btn fc-btn-primary fc-btn-sm"
+                              >
+                                View Images
+                              </Link>
+                            ) : null
+                          )}
                           <Link
                             to={`/batches/${batch.id}`}
                             className="fc-btn fc-btn-secondary fc-btn-sm"
