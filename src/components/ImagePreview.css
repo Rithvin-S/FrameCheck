@@ -22,27 +22,26 @@
 }
 
 .fc-preview-toolbar {
+  position: relative;
   height: 38px;
   min-height: 38px;
-  padding: 0 16px;
+  padding: 0 12px;
   border-bottom: 1px solid var(--fc-border);
   background-color: var(--fc-bg-surface);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  flex-wrap: nowrap;
   flex-shrink: 0;
-  min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
   box-sizing: border-box;
+  container-type: inline-size;
+  container-name: fc-top-toolbar;
 }
 
 .fc-preview-workspace .fc-preview-toolbar {
   background-color: #0b0f19;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: visible;
 }
 
 .fc-preview-workspace .fc-preview-counter {
@@ -91,21 +90,58 @@
 }
 
 .fc-preview-workspace .fc-preview-nav {
-  margin-left: auto;
+  margin-left: 0;
 }
 
-.fc-preview-workspace .fc-preview-nav .fc-btn {
+.fc-preview-nav-center {
+  grid-column: 2;
+  justify-self: center;
+  position: static;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  z-index: 5;
+  pointer-events: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.fc-preview-workspace .fc-preview-nav .fc-btn,
+.fc-preview-workspace .fc-preview-nav-center .fc-btn {
   background-color: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #e2e8f0;
-  height: 26px;
-  padding: 0 8px;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  line-height: 26px !important;
+  padding: 0 9px;
   font-size: 11.5px;
+  font-weight: 500;
+  border-radius: var(--fc-radius-md, 6px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-sizing: border-box;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
-.fc-preview-workspace .fc-preview-nav .fc-btn:hover:not(:disabled) {
+.fc-preview-workspace .fc-preview-nav .fc-btn:hover:not(:disabled),
+.fc-preview-workspace .fc-preview-nav-center .fc-btn:hover:not(:disabled) {
   background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
   color: #ffffff;
+}
+
+.fc-preview-workspace .fc-preview-nav .fc-btn:disabled,
+.fc-preview-workspace .fc-preview-nav-center .fc-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .fc-preview-toolbar::-webkit-scrollbar {
@@ -118,6 +154,8 @@
 }
 
 .fc-preview-title-group {
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -127,7 +165,7 @@
 }
 
 .fc-preview-title-group:empty {
-  display: none;
+  display: flex;
 }
 
 .fc-preview-counter {
@@ -175,16 +213,92 @@
 }
 
 .fc-preview-nav {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.fc-nav-group {
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
-  flex-wrap: nowrap;
 }
 
-.fc-preview-nav .fc-btn {
+.fc-toolbar-divider {
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background-color: rgba(255, 255, 255, 0.14);
+  margin: 0 4px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* Container-driven and media-driven responsive collapse */
+@container fc-top-toolbar (max-width: 1160px) {
+  .fc-preview-btn-label,
+  .fc-shortcut-kbd {
+    display: none !important;
+  }
+}
+
+@container fc-top-toolbar (max-width: 960px) {
+  .fc-nav-rot-btn {
+    display: none !important;
+  }
+}
+
+@container fc-top-toolbar (max-width: 820px) {
+  .fc-toolbar-divider {
+    display: none !important;
+  }
+  .fc-preview-nav {
+    gap: 3px;
+  }
+  .fc-preview-nav-center {
+    gap: 3px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .fc-preview-toolbar .fc-preview-btn-label,
+  .fc-preview-toolbar .fc-shortcut-kbd {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1040px) {
+  .fc-preview-toolbar .fc-nav-rot-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .fc-preview-toolbar {
+    padding: 0 8px;
+    gap: 4px;
+  }
+  .fc-preview-nav {
+    gap: 3px;
+  }
+  .fc-preview-nav-center {
+    gap: 3px;
+  }
+  .fc-toolbar-divider {
+    margin: 0 2px;
+  }
+}
+
+.fc-preview-nav .fc-btn,
+.fc-preview-nav-center .fc-btn {
   height: 28px;
-  padding: 0 8px;
+  padding: 0 10px;
   font-size: 11.5px;
   border-radius: var(--fc-radius-sm, 6px);
   white-space: nowrap !important;
@@ -460,26 +574,6 @@
   background-color: var(--fc-primary, #3b82f6) !important;
   color: #ffffff !important;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
-}
-
-.fc-nav-incomplete-btn {
-  height: 28px !important;
-  padding: 0 8px !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 500;
-  box-sizing: border-box;
-}
-
-.fc-nav-incomplete-count {
-  background-color: #f59e0b;
-  color: #1e293b;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 999px;
-  line-height: 1.2;
 }
 
 /* Canvas Toolbar Focus Mode Button */

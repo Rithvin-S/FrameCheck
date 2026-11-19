@@ -131,6 +131,7 @@ import {
 } from '../services/imageVersioningService.js';
 import { ReplacementApprovalModal } from '../components/ReplacementApprovalModal.jsx';
 import { VersionHistoryModal } from '../components/VersionHistoryModal.jsx';
+import { ReviewMoreActionsMenu } from '../components/ReviewMoreActionsMenu.jsx';
 import './ReviewWorkspacePage.css';
 
 /**
@@ -2641,31 +2642,6 @@ export function ReviewWorkspacePage() {
       [selectedImage.id]: 0,
     }));
   }, [selectedImage]);
-
-  const unreviewedCount = useMemo(
-    () => images.filter((img) => !img.is_completed).length,
-    [images]
-  );
-
-  const handleJumpNextUnreviewed = useCallback(() => {
-    if (!images || images.length === 0) return;
-    const startIndex = selectedIndex >= 0 ? selectedIndex : 0;
-    // Search forward from current index + 1
-    for (let i = startIndex + 1; i < images.length; i++) {
-      if (!images[i].is_completed) {
-        handleSelectImage(images[i].id, true);
-        return;
-      }
-    }
-    // Wrap around from beginning to startIndex
-    for (let i = 0; i < startIndex; i++) {
-      if (!images[i].is_completed) {
-        handleSelectImage(images[i].id, true);
-        return;
-      }
-    }
-    setActionNotice('All images in this batch are marked as completed!');
-  }, [handleSelectImage, images, selectedIndex]);
 
   const currentImageAnnotations = getImageAnnotationState(
     annotationsByImage,
@@ -5231,15 +5207,38 @@ export function ReviewWorkspacePage() {
             onResetRotation={handleResetRotation}
             isMagnifierActive={isMagnifierActive}
             onToggleMagnifier={handleToggleMagnifier}
-            onJumpNextUnreviewed={handleJumpNextUnreviewed}
-            unreviewedCount={unreviewedCount}
+            canUndo={currentImageAnnotations.history.past.length > 0}
+            canRedo={currentImageAnnotations.history.future.length > 0}
+            onUndo={canReview && !isReadOnlyMode ? handleUndo : null}
+            onRedo={canReview && !isReadOnlyMode ? handleRedo : null}
             headerActions={
               selectedImage ? (
                 <div className="fc-image-completion-control">
+                  <ReviewMoreActionsMenu
+                    onDownloadImageReport={handleDownloadImageReport}
+                    isGeneratingReport={generatingImageReport}
+                    isAnnotationsLoading={annotationsLoading}
+                    onOpenExport={() => setIsExportModalOpen(true)}
+                    isExportDisabled={!selectedImage || annotationsLoading}
+                    onOpenHistory={() => setIsVersionHistoryOpen(true)}
+                    versionNumber={selectedImage.current_version_number || 1}
+                    onRotateCW={handleRotateCW}
+                    onRotateCCW={handleRotateCCW}
+                  />
                   {selectedImage.is_completed ? (
                     <span className="fc-image-completed-pill">Completed</span>
                   ) : isReadOnlyMode ? (
                     <span className="fc-image-inreview-pill">In Review</span>
+                  ) : null}
+                  {canReview && selectedImage.replacement_status === 'pending_approval' ? (
+                    <button
+                      type="button"
+                      className="fc-btn fc-btn-primary fc-btn-sm fc-btn-pending-pulse"
+                      onClick={() => setIsReplacementModalOpen(true)}
+                      title="Inspect proposed replacement and approve or reject"
+                    >
+                      ⚡ Review Replacement
+                    </button>
                   ) : null}
                   {canReview ? (
                     <button
@@ -5247,7 +5246,7 @@ export function ReviewWorkspacePage() {
                       className={`fc-btn fc-btn-sm ${
                         selectedImage.is_completed
                           ? 'fc-btn-secondary'
-                          : 'fc-btn-success-outline'
+                          : 'fc-btn-success'
                       }`}
                       onClick={() => handleToggleImageCompletion(selectedImage)}
                       disabled={
@@ -5259,43 +5258,6 @@ export function ReviewWorkspacePage() {
                         : selectedImage.is_completed
                           ? 'Reopen Image'
                           : 'Mark Completed'}
-                    </button>
-                  ) : null}
-                  <button
-                    type="button"
-                    className="fc-btn fc-btn-secondary fc-btn-sm"
-                    onClick={handleDownloadImageReport}
-                    disabled={generatingImageReport || annotationsLoading}
-                  >
-                    {generatingImageReport
-                      ? 'Generating PDF…'
-                      : 'Download Image Report'}
-                  </button>
-                  <button
-                    type="button"
-                    className="fc-btn fc-btn-secondary fc-btn-sm"
-                    onClick={() => setIsExportModalOpen(true)}
-                    disabled={!selectedImage || annotationsLoading}
-                    title="Export full-resolution image with vector annotations"
-                  >
-                    Export Image…
-                  </button>
-                  <button
-                    type="button"
-                    className="fc-btn fc-btn-secondary fc-btn-sm"
-                    onClick={() => setIsVersionHistoryOpen(true)}
-                    title="View complete version history and audit trail"
-                  >
-                    History (v{selectedImage.current_version_number || 1})
-                  </button>
-                  {canReview && selectedImage.replacement_status === 'pending_approval' ? (
-                    <button
-                      type="button"
-                      className="fc-btn fc-btn-primary fc-btn-sm fc-btn-pending-pulse"
-                      onClick={() => setIsReplacementModalOpen(true)}
-                      title="Inspect proposed replacement and approve or reject"
-                    >
-                      ⚡ Review Replacement
                     </button>
                   ) : null}
                 </div>

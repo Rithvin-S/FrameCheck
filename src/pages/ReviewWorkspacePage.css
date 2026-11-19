@@ -60,12 +60,28 @@
 .fc-image-completion-control {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding-right: 8px;
-  margin-right: 4px;
-  border-right: 1px solid var(--fc-border);
+  gap: 5px;
   flex-shrink: 0;
   white-space: nowrap;
+}
+
+.fc-preview-workspace .fc-image-completion-control {
+  border-right: none;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.fc-btn-success {
+  background-color: #10b981 !important;
+  border: 1px solid #059669 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.fc-btn-success:hover:not(:disabled) {
+  background-color: #059669 !important;
+  border-color: #047857 !important;
+  color: #ffffff !important;
 }
 
 .fc-image-completion-control .fc-btn {

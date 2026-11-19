@@ -13,6 +13,10 @@ import { ReplaceImageModal } from '../components/ReplaceImageModal.jsx';
 import { VersionHistoryModal } from '../components/VersionHistoryModal.jsx';
 import { UploaderAnnotationOverlay } from '../components/UploaderAnnotationOverlay.jsx';
 import { UploaderCommentCard } from '../components/UploaderCommentCard.jsx';
+import { listImageReferences } from '../services/referenceImageService.js';
+import { ReferenceImagesPanel } from '../components/ReferenceImagesPanel.jsx';
+import { ReferenceViewerModal } from '../components/ReferenceViewerModal.jsx';
+import { ReferenceComparisonModal } from '../components/ReferenceComparisonModal.jsx';
 import './UploaderImageViewerPage.css';
 
 /**
@@ -196,6 +200,14 @@ export function UploaderImageViewerPage() {
   const [viewportDimensions, setViewportDimensions] = useState({ width: 0, height: 0 });
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // Reference Images state
+  const [references, setReferences] = useState([]);
+  const [referencesLoading, setReferencesLoading] = useState(false);
+  const [referencesError, setReferencesError] = useState('');
+  const [isReferencesOpen, setIsReferencesOpen] = useState(true);
+  const [selectedReferenceForView, setSelectedReferenceForView] = useState(null);
+  const [comparisonReference, setComparisonReference] = useState(null);
+
   // Replacement & Versioning Modals
   const [isReplaceModalOpen, setIsReplaceModalOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
@@ -216,7 +228,7 @@ export function UploaderImageViewerPage() {
   const scrollRootRef = useRef(null);
   const viewportRef = useRef(null);
 
-  // 1. Initial Data Fetching
+  // 1. Initial Data Fetching for Batch
   const loadBatchData = useCallback(async () => {
     setLoading(true);
     setErrorMessage('');
@@ -238,24 +250,56 @@ export function UploaderImageViewerPage() {
       setImages(imageRows || []);
       setAnnotations(annotationRows || []);
 
-      // Resolve initial selection
-      const paramImageId = searchParams.get('image');
-      const validParamImage = imageRows.find((img) => img.id === paramImageId);
-      if (validParamImage) {
-        setSelectedImageId(validParamImage.id);
-      } else if (imageRows.length > 0) {
-        setSelectedImageId(imageRows[0].id);
-      }
+      // Resolve initial selection without creating an unstable dependency on searchParams
+      setSelectedImageId((prevId) => {
+        if (prevId && (imageRows || []).some((img) => img.id === prevId)) {
+          return prevId;
+        }
+        const initialParam = new URLSearchParams(window.location.search).get('image');
+        const validParamImage = (imageRows || []).find((img) => img.id === initialParam);
+        if (validParamImage) {
+          return validParamImage.id;
+        }
+        return (imageRows && imageRows.length > 0) ? imageRows[0].id : null;
+      });
     } catch (err) {
       setErrorMessage(err?.message || 'Unable to load batch images.');
     } finally {
       setLoading(false);
     }
-  }, [batchId, searchParams]);
+  }, [batchId]);
 
   useEffect(() => {
     loadBatchData();
   }, [loadBatchData]);
+
+  const urlImageId = searchParams.get('image');
+
+  // Synchronize URL query parameters for direct links & browser Back/Forward navigation
+  useEffect(() => {
+    if (!urlImageId || loading || images.length === 0) return;
+    if (urlImageId !== selectedImageId) {
+      const matched = images.find((img) => img.id === urlImageId);
+      if (matched) {
+        setSelectedImageId(matched.id);
+      }
+    }
+  }, [urlImageId, selectedImageId, images, loading]);
+
+  // Ensure URL query param is populated on initial load if not already present
+  useEffect(() => {
+    if (loading || !selectedImageId) return;
+    if (!searchParams.get('image')) {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          next.set('image', selectedImageId);
+          return next;
+        },
+        { replace: true }
+      );
+    }
+  }, [loading, selectedImageId, searchParams, setSearchParams]);
 
   // Track viewport dimensions for responsive coordinate mapping
   useEffect(() => {
@@ -271,13 +315,41 @@ export function UploaderImageViewerPage() {
     updateViewportSize();
     window.addEventListener('resize', updateViewportSize);
     return () => window.removeEventListener('resize', updateViewportSize);
-  }, [isCollapsed]);
+  }, [isCollapsed, isReferencesOpen]);
 
-  // Reset selected annotation and natural dimensions on active image change
+  // Load reference images for the currently selected image
+  const loadReferences = useCallback(async (imageId) => {
+    if (!imageId) {
+      setReferences([]);
+      setReferencesLoading(false);
+      return;
+    }
+    setReferencesLoading(true);
+    setReferencesError('');
+    try {
+      const items = await listImageReferences(imageId);
+      setReferences(items || []);
+    } catch (err) {
+      console.error('[UploaderImageViewer] Error loading reference images:', err);
+      setReferencesError(err?.message || 'Failed to load reference images.');
+    } finally {
+      setReferencesLoading(false);
+    }
+  }, []);
+
+  // Fetch references and reset transient modal states on active image change
   useEffect(() => {
     setSelectedAnnotationId(null);
     setNaturalDimensions(null);
-  }, [selectedImageId]);
+    setSelectedReferenceForView(null);
+    setComparisonReference(null);
+
+    if (selectedImageId) {
+      loadReferences(selectedImageId);
+    } else {
+      setReferences([]);
+    }
+  }, [selectedImageId, loadReferences]);
 
   // Realtime subscription for image version updates
   useEffect(() => {
@@ -415,10 +487,18 @@ export function UploaderImageViewerPage() {
   // 3. Selection handler
   const handleSelectImage = useCallback(
     (id) => {
+      if (!id || id === selectedImageId) return;
       setSelectedImageId(id);
-      setSearchParams({ image: id }, { replace: true });
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          next.set('image', id);
+          return next;
+        },
+        { replace: true }
+      );
     },
-    [setSearchParams]
+    [selectedImageId, setSearchParams]
   );
 
   // Prev / Next stepper
@@ -580,6 +660,11 @@ export function UploaderImageViewerPage() {
         case 'B':
           e.preventDefault();
           setIsCollapsed((prev) => !prev);
+          break;
+        case 'r':
+        case 'R':
+          e.preventDefault();
+          setIsReferencesOpen((prev) => !prev);
           break;
         case 'Escape':
           setSelectedAnnotationId(null);
@@ -815,6 +900,40 @@ export function UploaderImageViewerPage() {
               </button>
             </div>
           ) : null}
+
+          {/* References Toggle Button */}
+          <button
+            type="button"
+            className={`fc-uiv-action-btn fc-uiv-btn-references${
+              isReferencesOpen ? ' fc-uiv-btn-references-active' : ''
+            }`}
+            onClick={() => setIsReferencesOpen((prev) => !prev)}
+            title={isReferencesOpen ? 'Hide Reference Images (R)' : 'Show Reference Images (R)'}
+            aria-label={isReferencesOpen ? 'Hide Reference Images' : 'Show Reference Images'}
+            aria-pressed={isReferencesOpen}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            <span>References</span>
+            {references.length > 0 ? (
+              <span className="fc-uiv-badge-count fc-uiv-badge-count-ref">
+                {references.length}
+              </span>
+            ) : null}
+          </button>
 
           <div className="fc-uiv-zoom-group" role="group" aria-label="Zoom controls">
             <button
@@ -1145,12 +1264,107 @@ export function UploaderImageViewerPage() {
                   : null
               }
               onClose={() => setSelectedAnnotationId(null)}
+              references={references.filter(
+                (r) => r.annotationId === selectedAnnotation.id
+              )}
+              onSelectReference={(ref) => setSelectedReferenceForView(ref)}
             />
           ) : null}
         </main>
+
+        {/* Right Panel: Reference Images Sidebar */}
+        {isReferencesOpen ? (
+          <aside
+            className="fc-uiv-references-sidebar"
+            aria-label="Reference images for selected image"
+          >
+            <div className="fc-uiv-ref-sidebar-header">
+              <div className="fc-uiv-filmstrip-title-row">
+                <span className="fc-uiv-filmstrip-title">Reference Images</span>
+                <span className="fc-uiv-badge-count">{references.length}</span>
+              </div>
+
+              <button
+                type="button"
+                className="fc-uiv-toggle-rail-btn"
+                onClick={() => setIsReferencesOpen(false)}
+                title="Hide reference images panel (R)"
+                aria-label="Hide reference images panel"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="fc-uiv-ref-sidebar-content">
+              <ReferenceImagesPanel
+                references={references}
+                isLoading={referencesLoading}
+                error={referencesError}
+                onRetry={() => loadReferences(selectedImageId)}
+                onSelectReferenceForView={(ref) => setSelectedReferenceForView(ref)}
+                onOpenComparison={(ref) => setComparisonReference(ref)}
+                readOnly
+                canReview={false}
+                currentUserId={user?.id}
+                userRole="user"
+                selectedImage={selectedImage}
+                annotations={currentImageAnnotations}
+                selectedAnnotationId={selectedAnnotationId}
+                onNavigateAnnotation={(annId) => setSelectedAnnotationId(annId)}
+              />
+            </div>
+          </aside>
+        ) : null}
       </div>
 
       {/* Modals */}
+      {selectedReferenceForView ? (
+        <ReferenceViewerModal
+          reference={selectedReferenceForView}
+          parentAnnotation={
+            selectedReferenceForView.annotationId
+              ? annotations.find((a) => a.id === selectedReferenceForView.annotationId)
+              : null
+          }
+          isOpen={Boolean(selectedReferenceForView)}
+          onClose={() => setSelectedReferenceForView(null)}
+          canManage={false}
+          onCompare={
+            selectedImage
+              ? (ref) => {
+                  setSelectedReferenceForView(null);
+                  setComparisonReference(ref);
+                }
+              : null
+          }
+        />
+      ) : null}
+
+      {comparisonReference && selectedImage ? (
+        <ReferenceComparisonModal
+          isOpen={Boolean(comparisonReference)}
+          originalImage={selectedImage}
+          currentReference={comparisonReference}
+          allReferences={references}
+          allAnnotations={currentImageAnnotations}
+          onSelectReference={(ref) => setComparisonReference(ref)}
+          onClose={() => setComparisonReference(null)}
+        />
+      ) : null}
+
       {isReplaceModalOpen && selectedImage && batch ? (
         <ReplaceImageModal
           isOpen={isReplaceModalOpen}

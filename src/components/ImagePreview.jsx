@@ -50,9 +50,11 @@ export function ImagePreview({
   onResetRotation = null,
   isMagnifierActive = false,
   onToggleMagnifier = null,
-  onJumpNextUnreviewed = null,
-  unreviewedCount = null,
   onSelectImageIndex = null,
+  canUndo = false,
+  canRedo = false,
+  onUndo = null,
+  onRedo = null,
 }) {
   const [signedUrl, setSignedUrl] = useState('');
   const [loadingUrl, setLoadingUrl] = useState(false);
@@ -652,118 +654,7 @@ export function ImagePreview({
             )}
           </div>
 
-          <div className="fc-preview-nav">
-            {headerActions}
-
-            {/* Rotation Controls */}
-            {onRotateCCW ? (
-              <button
-                type="button"
-                className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-icon-btn"
-                onClick={onRotateCCW}
-                title="Rotate 90° CCW ([)"
-                aria-label="Rotate 90 degrees counter-clockwise"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="1 4 1 10 7 10" />
-                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-                </svg>
-              </button>
-            ) : null}
-            {onRotateCW ? (
-              <button
-                type="button"
-                className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-icon-btn"
-                onClick={onRotateCW}
-                title="Rotate 90° CW (])"
-                aria-label="Rotate 90 degrees clockwise"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="23 4 23 10 17 10" />
-                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-                </svg>
-              </button>
-            ) : null}
-            {rotation % 360 !== 0 && onResetRotation ? (
-              <button
-                type="button"
-                className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-rot-reset"
-                onClick={onResetRotation}
-                title="Reset rotation to 0°"
-                aria-label="Reset rotation to 0 degrees"
-              >
-                {rotation}° ✕
-              </button>
-            ) : null}
-
-            {/* Magnifier Loupe Toggle */}
-            <button
-              type="button"
-              className={`fc-btn fc-btn-sm ${
-                activeMagnifier ? 'fc-btn-primary fc-nav-magnifier-active' : 'fc-btn-secondary'
-              }`}
-              onClick={handleToggleMagnifier}
-              title="Magnifier Loupe Lens (Z)"
-              aria-label="Toggle Magnifier Lens"
-              aria-pressed={activeMagnifier}
-            >
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                <circle cx="7" cy="7" r="4.5" />
-                <line x1="10.5" y1="10.5" x2="14" y2="14" />
-              </svg>
-              <span>Loupe</span>
-            </button>
-
-            {/* Focus Mode Canvas Control */}
-            {onToggleFocusMode ? (
-              <button
-                type="button"
-                className={`fc-btn fc-btn-sm fc-nav-focus-btn${
-                  isFocusMode ? ' fc-btn-primary fc-nav-focus-active' : ' fc-btn-secondary'
-                }`}
-                onClick={onToggleFocusMode}
-                title="Full-Screen Focus Mode (F) - Expand image to fill screen and hide panels"
-                aria-label="Full-Screen Focus Mode (F)"
-                aria-pressed={isFocusMode}
-              >
-                <svg
-                  width="13"
-                  height="13"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M2 6V2h4m8 4V2h-4M2 10v4h4m8-4v4h-4" />
-                </svg>
-                <span>Focus</span>
-                <kbd className="fc-shortcut-kbd">F</kbd>
-              </button>
-            ) : null}
-
-            {/* Jump to Next Incomplete / Unreviewed Image */}
-            {onJumpNextUnreviewed ? (
-              <button
-                type="button"
-                className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-incomplete-btn"
-                onClick={onJumpNextUnreviewed}
-                title="Jump to next incomplete / unreviewed image in batch (Shift+N)"
-                aria-label="Next incomplete image"
-              >
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polygon points="5 3 12 8 5 13 5 3" />
-                  <line x1="13" y1="3" x2="13" y2="13" />
-                </svg>
-                <span>Next Incomplete</span>
-                {unreviewedCount != null && unreviewedCount > 0 ? (
-                  <span className="fc-nav-incomplete-count">{unreviewedCount}</span>
-                ) : null}
-              </button>
-            ) : null}
-
+          <div className="fc-preview-nav-center">
             <button
               type="button"
               className="fc-btn fc-btn-secondary fc-btn-sm"
@@ -773,6 +664,7 @@ export function ImagePreview({
               }}
               disabled={imageIndex <= 0}
               title="Previous Image (PageUp or Alt+Left)"
+              aria-label="Previous image"
             >
               Previous
             </button>
@@ -785,9 +677,146 @@ export function ImagePreview({
               }}
               disabled={imageIndex >= totalImages - 1}
               title="Next Image (PageDown or Alt+Right)"
+              aria-label="Next image"
             >
               Next
             </button>
+          </div>
+
+          <div className="fc-preview-nav">
+            {/* History Controls: Undo & Redo */}
+            {onUndo || onRedo ? (
+              <div className="fc-nav-group fc-nav-history-group" role="group" aria-label="Undo and Redo">
+                {onUndo ? (
+                  <button
+                    type="button"
+                    className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-icon-btn"
+                    onClick={onUndo}
+                    disabled={!canUndo}
+                    title="Undo last action (Ctrl+Z)"
+                    aria-label="Undo last action"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="4 7 1 4 4 1" />
+                      <path d="M1 4h9a4 4 0 0 1 4 4v2" />
+                    </svg>
+                  </button>
+                ) : null}
+                {onRedo ? (
+                  <button
+                    type="button"
+                    className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-icon-btn"
+                    onClick={onRedo}
+                    disabled={!canRedo}
+                    title="Redo last undone action (Ctrl+Y)"
+                    aria-label="Redo last undone action"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="12 7 15 4 12 1" />
+                      <path d="M15 4H6a4 4 0 0 0-4 4v2" />
+                    </svg>
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+
+            {onUndo || onRedo ? <span className="fc-toolbar-divider" aria-hidden="true" /> : null}
+
+            {/* View Inspection Controls: Rotate, Loupe, Focus */}
+            <div className="fc-nav-group fc-nav-view-group" role="group" aria-label="View controls">
+              {onRotateCCW ? (
+                <button
+                  type="button"
+                  className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-icon-btn fc-nav-rot-btn"
+                  onClick={onRotateCCW}
+                  title="Rotate 90° CCW ([)"
+                  aria-label="Rotate 90 degrees counter-clockwise"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="1 4 1 10 7 10" />
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                  </svg>
+                </button>
+              ) : null}
+              {onRotateCW ? (
+                <button
+                  type="button"
+                  className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-icon-btn fc-nav-rot-btn"
+                  onClick={onRotateCW}
+                  title="Rotate 90° CW (])"
+                  aria-label="Rotate 90 degrees clockwise"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="23 4 23 10 17 10" />
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                  </svg>
+                </button>
+              ) : null}
+              {rotation % 360 !== 0 && onResetRotation ? (
+                <button
+                  type="button"
+                  className="fc-btn fc-btn-secondary fc-btn-sm fc-nav-rot-reset"
+                  onClick={onResetRotation}
+                  title="Reset rotation to 0°"
+                  aria-label="Reset rotation to 0 degrees"
+                >
+                  {rotation}° ✕
+                </button>
+              ) : null}
+
+              {/* Magnifier Loupe Toggle */}
+              <button
+                type="button"
+                className={`fc-btn fc-btn-sm ${
+                  activeMagnifier ? 'fc-btn-primary fc-nav-magnifier-active' : 'fc-btn-secondary'
+                }`}
+                onClick={handleToggleMagnifier}
+                title="Magnifier Loupe Lens (Z)"
+                aria-label="Toggle Magnifier Lens"
+                aria-pressed={activeMagnifier}
+              >
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <circle cx="7" cy="7" r="4.5" />
+                  <line x1="10.5" y1="10.5" x2="14" y2="14" />
+                </svg>
+                <span className="fc-preview-btn-label">Loupe</span>
+              </button>
+
+              {/* Focus Mode Canvas Control */}
+              {onToggleFocusMode ? (
+                <button
+                  type="button"
+                  className={`fc-btn fc-btn-sm fc-nav-focus-btn${
+                    isFocusMode ? ' fc-btn-primary fc-nav-focus-active' : ' fc-btn-secondary'
+                  }`}
+                  onClick={onToggleFocusMode}
+                  title="Full-Screen Focus Mode (F) - Expand image to fill screen and hide panels"
+                  aria-label="Full-Screen Focus Mode (F)"
+                  aria-pressed={isFocusMode}
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 6V2h4m8 4V2h-4M2 10v4h4m8-4v4h-4" />
+                  </svg>
+                  <span className="fc-preview-btn-label">Focus</span>
+                  <kbd className="fc-shortcut-kbd">F</kbd>
+                </button>
+              ) : null}
+            </div>
+
+            {headerActions ? <span className="fc-toolbar-divider" aria-hidden="true" /> : null}
+
+            {/* Actions: More Menu, Status, Mark Completed */}
+            {headerActions}
           </div>
         </div>
       ) : null}

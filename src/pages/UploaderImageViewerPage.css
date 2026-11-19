@@ -730,16 +730,113 @@
   z-index: 3;
 }
 
+/* --------------------------------------------------------------------------
+   References Section in Uploader Image Viewer
+   -------------------------------------------------------------------------- */
+.fc-uiv-btn-references {
+  background-color: var(--fc-bg-surface, #ffffff);
+  color: var(--fc-text-primary, #0f172a);
+  border: 1px solid var(--fc-border, #e2e8f0);
+}
+
+.fc-uiv-btn-references:hover {
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+  border-color: var(--fc-border-hover, #cbd5e1);
+}
+
+.fc-uiv-btn-references-active {
+  background-color: var(--fc-accent-soft, #eff6ff) !important;
+  color: var(--fc-accent, #2563eb) !important;
+  border-color: var(--fc-accent, #2563eb) !important;
+}
+
+.fc-uiv-badge-count-ref {
+  background-color: var(--fc-accent, #2563eb) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  font-size: 10px;
+  padding: 1px 5px;
+}
+
+.fc-uiv-references-sidebar {
+  width: 320px;
+  min-width: 320px;
+  height: 100%;
+  background-color: var(--fc-bg-surface, #ffffff);
+  border-left: 1px solid var(--fc-border, #e2e8f0);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+  flex-shrink: 0;
+  animation: fc-uiv-ref-slide-in 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fc-uiv-ref-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fc-uiv-ref-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--fc-border, #e2e8f0);
+  background-color: var(--fc-bg-surface, #ffffff);
+  flex-shrink: 0;
+}
+
+.fc-uiv-ref-sidebar-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 /* Responsive adjustments */
+@media (max-width: 1024px) {
+  .fc-uiv-references-sidebar {
+    width: 300px;
+    min-width: 300px;
+  }
+}
+
 @media (max-width: 768px) {
   .fc-uiv-filmstrip {
     width: 220px;
     min-width: 220px;
+  }
+  .fc-uiv-references-sidebar {
+    width: 280px;
+    min-width: 280px;
   }
   .fc-uiv-filename-pill {
     display: none;
   }
   .fc-uiv-batch-title {
     max-width: 140px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-uiv-references-sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.25);
+    z-index: 30;
   }
 }

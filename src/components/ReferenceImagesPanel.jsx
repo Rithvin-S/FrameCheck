@@ -664,7 +664,7 @@ export function ReferenceImagesPanel({
             <button
               type="button"
               className="fc-ref-panel-compare-btn"
-              onClick={() => onOpenComparison(filteredReferences[0] || references[0])}
+              onClick={() => onOpenComparison(visibleReferences[0] || references[0])}
               title="Open side-by-side reference comparison"
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

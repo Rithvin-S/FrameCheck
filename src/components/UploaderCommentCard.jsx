@@ -12,6 +12,8 @@ export function UploaderCommentCard({
   onPrev = null,
   onNext = null,
   onClose,
+  references = [],
+  onSelectReference = null,
 }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -104,6 +106,41 @@ export function UploaderCommentCard({
                 #{label}
               </span>
             ))}
+          </div>
+        ) : null}
+
+        {references && references.length > 0 ? (
+          <div className="fc-uiv-card-ref-section">
+            <span className="fc-uiv-card-ref-label">
+              Attached Reference{references.length > 1 ? 's' : ''}:
+            </span>
+            <div className="fc-uiv-card-ref-list">
+              {references.map((ref) => (
+                <button
+                  key={ref.id}
+                  type="button"
+                  className="fc-uiv-card-ref-chip"
+                  onClick={() => onSelectReference?.(ref)}
+                  title={`Click to preview reference: ${ref.originalFilename}`}
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21 15 16 10 5 21" />
+                  </svg>
+                  <span className="fc-uiv-card-ref-name">{ref.originalFilename}</span>
+                  <span className="fc-uiv-card-ref-badge">Preview</span>
+                </button>
+              ))}
+            </div>
           </div>
         ) : null}
       </div>

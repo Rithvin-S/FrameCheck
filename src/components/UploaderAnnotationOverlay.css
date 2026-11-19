@@ -369,3 +369,83 @@
   background-color: rgba(56, 189, 248, 0.15);
   border-color: rgba(56, 189, 248, 0.3);
 }
+
+/* Attached Reference Chips in Comment Card */
+.fc-uiv-card-ref-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.fc-uiv-card-ref-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--fc-text-muted, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.fc-uiv-card-ref-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fc-uiv-card-ref-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  background-color: var(--fc-bg-subtle, #f1f5f9);
+  border: 1px solid var(--fc-border, #e2e8f0);
+  border-radius: var(--fc-radius-sm, 6px);
+  cursor: pointer;
+  text-align: left;
+  transition: all 120ms ease;
+  font-size: 11.5px;
+  color: var(--fc-text-primary, #0f172a);
+}
+
+.fc-uiv-card-ref-chip:hover {
+  background-color: var(--fc-accent-soft, #eff6ff);
+  border-color: var(--fc-accent-border, #bfdbfe);
+  color: var(--fc-accent, #2563eb);
+}
+
+[data-theme='dark'] .fc-uiv-card-ref-chip {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .fc-uiv-card-ref-chip:hover {
+  background-color: rgba(37, 99, 235, 0.2);
+  border-color: var(--fc-accent, #2563eb);
+  color: #ffffff;
+}
+
+.fc-uiv-card-ref-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.fc-uiv-card-ref-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background-color: var(--fc-bg-surface, #ffffff);
+  border: 1px solid var(--fc-border, #e2e8f0);
+  color: var(--fc-text-muted, #64748b);
+  flex-shrink: 0;
+}
+
+.fc-uiv-card-ref-chip:hover .fc-uiv-card-ref-badge {
+  background-color: var(--fc-accent, #2563eb);
+  color: #ffffff;
+  border-color: var(--fc-accent, #2563eb);
+}
